@@ -117,5 +117,5 @@ class start:
 
 def main():
     symbol = 'BATUSDT'
-    interval = '30m'
+    interval = '15m'
     step1 = start(symbol, interval)

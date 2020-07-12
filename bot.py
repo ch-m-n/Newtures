@@ -192,7 +192,7 @@ def main():
     base = 'BAT'
     step_size = 0.0001
     leverage = 50
-    interval = '30m'
+    interval = '15m'
     
     step1 = start(symbol, quote, base, step_size, leverage, interval)
 
