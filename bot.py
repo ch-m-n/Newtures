@@ -28,7 +28,7 @@ class start:
         self.changeLeverage = self.changeLeverage()
         self.quoteBalance = Binance.client.futures_account_balance(asset=self.quote)['balance']
         self.baseBalance = Binance.client.futures_get_all_orders(symbol='BATUSDT')[-1]['origQty']
-        self.openPosition = float(Binance.client.futures_position_information()[-5]['positionAmt'])
+        self.openPosition = float(Binance.client.futures_position_information()[6]['positionAmt'])
         self.Quant = self.checkQuant()
         self.fire = self.strategy()
         
@@ -58,7 +58,7 @@ class start:
     def checkQuant(self):
         df = self.df    
         canBuySell = (float(self.quoteBalance)/float(self.df['close'][499]))*0.05*self.leverage
-        BuySellQuant = floatPrecision(canBuySell, 0.1)
+        BuySellQuant = floatPrecision(canBuySell, 1)
         return BuySellQuant
 
     def strategy(self):
@@ -187,11 +187,11 @@ class start:
 
 
 def main():
-    symbol = 'BATUSDT'
+    symbol = 'TRXUSDT'
     quote = 'USDT'
-    base = 'BAT'
-    step_size = 0.0001
-    leverage = 50
+    base = 'TRX'
+    step_size = 0.00001
+    leverage = 75
     interval = '15m'
     
     step1 = start(symbol, quote, base, step_size, leverage, interval)

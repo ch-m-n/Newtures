@@ -116,6 +116,6 @@ class start:
                 break
 
 def main():
-    symbol = 'BATUSDT'
+    symbol = 'TRXUSDT'
     interval = '15m'
     step1 = start(symbol, interval)
