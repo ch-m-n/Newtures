@@ -39,7 +39,7 @@ class start:
 
     def strategy(self):
         df =self.df
-        blue = MA(df['close'], timeperiod=50)
+        blue = EMA(df['close'], timeperiod=50)
         orange = EMA(df['close'], timeperiod=200)
         bl = float(blue[499])
         ol = float(orange[499])

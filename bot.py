@@ -144,7 +144,7 @@ class start:
 
 
         if quou.marketSide == 'BEAR':
-            while macd < sign:
+            while macd < sign and current < psar:
                 if self.openPosition == 0:
                     clearOrders()
                     shortStop()
@@ -153,7 +153,7 @@ class start:
                     print('Placed SELL ORDER')
                     break
                 
-            while macd > sign:
+            while current > psar:
                 if self.openPosition < 0:
                     try:
                         closeSellOrder()
@@ -164,7 +164,7 @@ class start:
 
 
         if quou.marketSide == 'BULL':
-            while macd > sign:
+            while macd > sign and current > psar:
                 if self.openPosition == 0:
                     clearOrders()
                     longStop()
@@ -173,7 +173,7 @@ class start:
                     print('Placed BUY ORDER')
                     break
                 
-            while macd < sign:
+            while current < psar:
                 if self.openPosition > 0:
                     try:
                         closeBuyOrder()
