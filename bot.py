@@ -157,7 +157,7 @@ class start:
                 placeSellOrder()
                 print('Placed SELL ORDER')
                 
-            if current > psar and self.openPosition < 0::
+            if current > psar and self.openPosition < 0:
                 try:
                     closeSellOrder()
                 except:
