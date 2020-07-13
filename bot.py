@@ -145,7 +145,6 @@ class start:
                 stopPrice = shortTP,
                 closePosition='true')
 
-
         if quou.marketSide == 'BEAR':
             while macd < sign and current < psar:
                 if self.openPosition == 0:
@@ -196,9 +195,3 @@ def main():
     
     step1 = start(symbol, quote, base, step_size, leverage, interval)
 
-if __name__ == '__main__':
-    while True:
-        if datetime.datetime.now().minute % 15 == 0:
-            higherFrame.main()
-            main()
-        time.sleep(60)
