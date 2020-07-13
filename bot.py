@@ -4,7 +4,7 @@ import time
 import datetime
 import Binance
 import math
-from talib import EMA, MACD
+from talib import EMA, MACD, SAR
 import higherFrame
 import quou
 
@@ -63,6 +63,9 @@ class start:
 
     def strategy(self):
         df = self.df
+
+        sar = SAR(df['high'], df['low'], acceleration=0.03, maximum=0.3)
+        psar = float(sar[499])
 
         macd, macdsignal, macdhist = MACD(df['close'], fastperiod=7, slowperiod=28, signalperiod=3)
         macd = float(macd[499])
