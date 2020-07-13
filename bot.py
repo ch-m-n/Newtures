@@ -4,7 +4,7 @@ import time
 import datetime
 import Binance
 import math
-from talib import EMA, MACD, SAR, EMA
+from talib import EMA, MACD, SAR
 
 #info = Binance.client.get_account()
 
@@ -156,6 +156,7 @@ class start:
                 shortProfit()
                 placeSellOrder()
                 print('Placed SELL ORDER')
+                break
                 
             if current > psar and self.openPosition < 0:
                 try:
@@ -163,6 +164,7 @@ class start:
                 except:
                     pass
                 print('Closed SELL ORDER')
+                break
 
         while bl > ol:
             if macd > sign and current > psar and self.openPosition == 0:
@@ -171,6 +173,7 @@ class start:
                 longProfit()
                 placeBuyOrder()
                 print('Placed BUY ORDER')
+                break
                 
             if current < psar and self.openPosition > 0:
                 try:
@@ -178,6 +181,7 @@ class start:
                 except:
                     pass
                 print('Closed BUY ORDER')
+                break
 
 def main():
     symbol = 'TRXUSDT'
