@@ -150,7 +150,7 @@ class start:
                 closePosition='true')
 
         while bl < ol:
-            if macd < sign and current < psar and self.openPosition == 0::
+            if macd < sign and current < psar and self.openPosition == 0:
                 clearOrders()
                 shortStop()
                 shortProfit()
