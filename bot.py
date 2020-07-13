@@ -4,9 +4,7 @@ import time
 import datetime
 import Binance
 import math
-from talib import EMA, MACD, SAR
-import higherFrame
-import quou
+from talib import EMA, MACD, SAR, EMA
 
 #info = Binance.client.get_account()
 
@@ -27,7 +25,7 @@ class start:
         self.df = self.getData()
         self.changeLeverage = self.changeLeverage()
         self.quoteBalance = Binance.client.futures_account_balance(asset=self.quote)['balance']
-        self.baseBalance = Binance.client.futures_get_all_orders(symbol='BATUSDT')[-1]['origQty']
+        self.baseBalance = Binance.client.futures_get_all_orders(symbol=self.symbol)[-1]['origQty']
         self.openPosition = float(Binance.client.futures_position_information()[6]['positionAmt'])
         self.Quant = self.checkQuant()
         self.fire = self.strategy()
@@ -63,6 +61,12 @@ class start:
 
     def strategy(self):
         df = self.df
+
+        blue = EMA(df['close'], timeperiod=50)
+        orange = EMA(df['close'], timeperiod=200)
+
+        bl = float(blue[499])
+        ol = float(orange[499])
 
         sar = SAR(df['high'], df['low'], acceleration=0.03, maximum=0.3)
         psar = float(sar[499])
@@ -145,7 +149,7 @@ class start:
                 stopPrice = shortTP,
                 closePosition='true')
 
-        if quou.marketSide == 'BEAR':
+        if bl < ol:
             while macd < sign and current < psar:
                 if self.openPosition == 0:
                     clearOrders()
@@ -153,7 +157,6 @@ class start:
                     shortProfit()
                     placeSellOrder()
                     print('Placed SELL ORDER')
-                    break
                 
             while current > psar:
                 if self.openPosition < 0:
@@ -162,10 +165,8 @@ class start:
                     except:
                         pass
                     print('Closed SELL ORDER')
-                    break
 
-
-        if quou.marketSide == 'BULL':
+        if bl > ol:
             while macd > sign and current > psar:
                 if self.openPosition == 0:
                     clearOrders()
@@ -173,7 +174,6 @@ class start:
                     longProfit()
                     placeBuyOrder()
                     print('Placed BUY ORDER')
-                    break
                 
             while current < psar:
                 if self.openPosition > 0:
@@ -182,8 +182,6 @@ class start:
                     except:
                         pass
                     print('Closed BUY ORDER')
-                    break
-
 
 def main():
     symbol = 'TRXUSDT'
@@ -195,3 +193,8 @@ def main():
     
     step1 = start(symbol, quote, base, step_size, leverage, interval)
 
+if __name__ == '__main__':
+    while True:
+        if datetime.datetime.now().minute % 15 == 0:
+            main()
+            time.sleep(60)
