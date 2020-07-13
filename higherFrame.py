@@ -39,8 +39,8 @@ class start:
 
     def strategy(self):
         df =self.df
-        blue = MA(df['close'], timeperiod=12)
-        orange = EMA(df['close'], timeperiod=9)
+        blue = MA(df['close'], timeperiod=50)
+        orange = EMA(df['close'], timeperiod=200)
         bl = float(blue[499])
         ol = float(orange[499])
 
@@ -77,7 +77,7 @@ class start:
                 )
 
         
-        while ol > bl:
+        while ol < bl:
             quou.changeSideBull()
             if quou.marketSide == 'BULL' and quou.bullsidetimes == 0:
                 """"""
@@ -85,10 +85,6 @@ class start:
                     closeSellOrder()
                 except:
                     pass
-                time.sleep(2)
-                placeBuyOrder()
-                time.sleep(2)
-                placeSellOrder()
                 quou.changeBullTimes1()
                 quou.changeBearTimes0()
                 print('BULLISH')
@@ -96,7 +92,7 @@ class start:
             if quou.marketSide == 'BULL' and quou.bullsidetimes == 1:
                 break 
             
-        while ol < bl:
+        while ol > bl:
             quou.changeSideBear()
             if quou.marketSide == 'BEAR' and quou.bearsidetimes == 0:
                 """"""
@@ -104,10 +100,6 @@ class start:
                     closeBuyOrder()
                 except:
                     pass
-                time.sleep(2)
-                placeSellOrder()
-                time.sleep(2)
-                placeBuyOrder()
                 quou.changeBearTimes1()
                 quou.changeBullTimes0()
                 print('BEARISH')
