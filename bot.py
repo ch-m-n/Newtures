@@ -156,7 +156,7 @@ class start:
                     print('Placed SELL ORDER')
                     break
                 
-            while macd > sign or current > psar:
+            while current > psar:
                 if self.openPosition < 0:
                     try:
                         closeSellOrder()
@@ -176,7 +176,7 @@ class start:
                     print('Placed BUY ORDER')
                     break
                 
-            while macd < sign or current < psar:
+            while current < psar:
                 if self.openPosition > 0:
                     try:
                         closeBuyOrder()
