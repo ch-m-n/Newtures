@@ -67,7 +67,7 @@ class start:
         sar = SAR(df['high'], df['low'], acceleration=0.03, maximum=0.3)
         psar = float(sar[499])
 
-        macd, macdsignal, macdhist = MACD(df['close'], fastperiod=7, slowperiod=28, signalperiod=3)
+        macd, macdsignal, macdhist = MACD(df['close'], fastperiod=12, slowperiod=26, signalperiod=9)
         macd = float(macd[499])
         sign = float(macdsignal[499])
         current = float(floatPrecision(df['close'][499], self.step_size))
