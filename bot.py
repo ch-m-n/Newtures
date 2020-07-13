@@ -151,33 +151,33 @@ class start:
 
         while bl < ol:
             if macd < sign and current < psar and self.openPosition == 0::
-                    clearOrders()
-                    shortStop()
-                    shortProfit()
-                    placeSellOrder()
-                    print('Placed SELL ORDER')
+                clearOrders()
+                shortStop()
+                shortProfit()
+                placeSellOrder()
+                print('Placed SELL ORDER')
                 
             if current > psar and self.openPosition < 0::
-                    try:
-                        closeSellOrder()
-                    except:
-                        pass
-                    print('Closed SELL ORDER')
+                try:
+                    closeSellOrder()
+                except:
+                    pass
+                print('Closed SELL ORDER')
 
         while bl > ol:
             if macd > sign and current > psar and self.openPosition == 0:
-                    clearOrders()
-                    longStop()
-                    longProfit()
-                    placeBuyOrder()
-                    print('Placed BUY ORDER')
+                clearOrders()
+                longStop()
+                longProfit()
+                placeBuyOrder()
+                print('Placed BUY ORDER')
                 
             if current < psar and self.openPosition > 0:
-                    try:
-                        closeBuyOrder()
-                    except:
-                        pass
-                    print('Closed BUY ORDER')
+                try:
+                    closeBuyOrder()
+                except:
+                    pass
+                print('Closed BUY ORDER')
 
 def main():
     symbol = 'TRXUSDT'
