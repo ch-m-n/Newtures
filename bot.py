@@ -149,34 +149,30 @@ class start:
                 stopPrice = shortTP,
                 closePosition='true')
 
-        if bl < ol:
-            while macd < sign and current < psar:
-                if self.openPosition == 0:
+        while bl < ol:
+            if macd < sign and current < psar and self.openPosition == 0::
                     clearOrders()
                     shortStop()
                     shortProfit()
                     placeSellOrder()
                     print('Placed SELL ORDER')
                 
-            while current > psar:
-                if self.openPosition < 0:
+            if current > psar and self.openPosition < 0::
                     try:
                         closeSellOrder()
                     except:
                         pass
                     print('Closed SELL ORDER')
 
-        if bl > ol:
-            while macd > sign and current > psar:
-                if self.openPosition == 0:
+        while bl > ol:
+            if macd > sign and current > psar and self.openPosition == 0:
                     clearOrders()
                     longStop()
                     longProfit()
                     placeBuyOrder()
                     print('Placed BUY ORDER')
                 
-            while current < psar:
-                if self.openPosition > 0:
+            if current < psar and self.openPosition > 0:
                     try:
                         closeBuyOrder()
                     except:
