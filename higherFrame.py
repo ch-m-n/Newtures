@@ -43,20 +43,6 @@ class start:
         orange = EMA(df['close'], timeperiod=200)
         bl = float(blue[499])
         ol = float(orange[499])
-
-        def placeBuyOrder():
-            orderBuy = Binance.client.futures_create_order(
-                symbol = self.symbol,
-                side = 'BUY',
-                type = 'MARKET',
-                quantity = 1)
-
-        def placeSellOrder():
-            orderSell = Binance.client.futures_create_order(
-                symbol = self.symbol,
-                side = 'SELL',
-                type = 'MARKET',
-                quantity = 1)
         
         def closeSellOrder():
             orderBuy = Binance.client.futures_create_order(

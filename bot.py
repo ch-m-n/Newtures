@@ -4,7 +4,7 @@ import time
 import datetime
 import Binance
 import math
-from talib import EMA, MACD, SAR
+from talib import EMA, MACD
 import higherFrame
 import quou
 
@@ -64,10 +64,7 @@ class start:
     def strategy(self):
         df = self.df
 
-        sar = SAR(df['high'], df['low'], acceleration=0.03, maximum=0.3)
-        psar = float(sar[499])
-
-        macd, macdsignal, macdhist = MACD(df['close'], fastperiod=7, slowperiod=28, signalperiod=3)
+        macd, macdsignal, macdhist = MACD(df['close'], fastperiod=7, slowperiod=26, signalperiod=3)
         macd = float(macd[499])
         sign = float(macdsignal[499])
         current = float(floatPrecision(df['close'][499], self.step_size))
@@ -147,7 +144,7 @@ class start:
 
 
         if quou.marketSide == 'BEAR':
-            while macd < sign and current < psar:
+            while macd < sign:
                 if self.openPosition == 0:
                     clearOrders()
                     shortStop()
@@ -156,7 +153,7 @@ class start:
                     print('Placed SELL ORDER')
                     break
                 
-            while current > psar:
+            while macd > sign:
                 if self.openPosition < 0:
                     try:
                         closeSellOrder()
@@ -167,7 +164,7 @@ class start:
 
 
         if quou.marketSide == 'BULL':
-            while macd > sign and current > psar:
+            while macd > sign:
                 if self.openPosition == 0:
                     clearOrders()
                     longStop()
@@ -176,7 +173,7 @@ class start:
                     print('Placed BUY ORDER')
                     break
                 
-            while current < psar:
+            while macd < sign:
                 if self.openPosition > 0:
                     try:
                         closeBuyOrder()
