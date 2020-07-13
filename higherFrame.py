@@ -3,7 +3,7 @@ import time
 import datetime
 import Binance
 import math
-from talib import EMA, MA
+from talib import EMA
 import quou
 
 
