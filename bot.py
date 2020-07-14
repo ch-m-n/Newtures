@@ -4,7 +4,7 @@ import time
 import datetime
 import Binance
 import math
-from talib import EMA, MACD, STOCH
+from talib import EMA, MACD
 
 #info = Binance.client.get_account()
 
