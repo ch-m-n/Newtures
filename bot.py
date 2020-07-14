@@ -149,7 +149,6 @@ class start:
         while bl < ol:
             if macd < sign and self.openPosition == 0:
                 clearOrders()
-                shortProfit()
                 placeSellOrder()
                 print('Placed SELL ORDER')
                 break
@@ -165,7 +164,6 @@ class start:
         while bl > ol:
             if macd > sign and self.openPosition == 0:
                 clearOrders()
-                longProfit()
                 placeBuyOrder()
                 print('Placed BUY ORDER')
                 break
