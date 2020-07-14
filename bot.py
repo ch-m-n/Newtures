@@ -145,6 +145,6 @@ def main():
 
 if __name__ == '__main__':
     while True:
-        if datetime.datetime.now().minute % 1 == 0:
+        if datetime.datetime.now().minute % 15 == 0:
             main()
         time.sleep(60)
