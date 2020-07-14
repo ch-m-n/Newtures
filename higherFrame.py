@@ -17,7 +17,6 @@ class start:
         self.symbol = symbol
         self.interval = interval
         self.df = self.getData()
-        self.baseBalance = Binance.client.futures_get_all_orders(symbol=)[-1]['origQty']
         self.fire = self.strategy()
         
     def getData(self):
