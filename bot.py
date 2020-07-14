@@ -152,8 +152,6 @@ class start:
         while bl < ol:
             if macd < sign and current < psar and self.openPosition == 0:
                 clearOrders()
-                shortStop()
-                shortProfit()
                 placeSellOrder()
                 print('Placed SELL ORDER')
                 break
@@ -169,8 +167,6 @@ class start:
         while bl > ol:
             if macd > sign and current > psar and self.openPosition == 0:
                 clearOrders()
-                longStop()
-                longProfit()
                 placeBuyOrder()
                 print('Placed BUY ORDER')
                 break
@@ -195,6 +191,6 @@ def main():
 
 if __name__ == '__main__':
     while True:
-        if datetime.datetime.now().minute % 15 == 0:
+        if datetime.datetime.now().minute % 1 == 0:
             main()
         time.sleep(60)
