@@ -4,7 +4,7 @@ import time
 import datetime
 import Binance
 import math
-from talib import EMA, MACD, SAR
+from talib import EMA, MACD
 
 #info = Binance.client.get_account()
 
@@ -67,9 +67,6 @@ class start:
 
         bl = float(blue[499])
         ol = float(orange[499])
-
-        sar = SAR(df['high'], df['low'], acceleration=0.03, maximum=0.3)
-        psar = float(sar[499])
 
         macd, macdsignal, macdhist = MACD(df['close'], fastperiod=12, slowperiod=26, signalperiod=9)
         macd = float(macd[499])
@@ -150,13 +147,13 @@ class start:
                 closePosition='true')
 
         while bl < ol:
-            if macd < sign and current < psar and self.openPosition == 0:
+            if macd < sign and self.openPosition == 0:
                 clearOrders()
                 placeSellOrder()
                 print('Placed SELL ORDER')
                 break
-                
-            if current > psar and self.openPosition < 0:
+
+            if macd > sign and self.openPosition < 0:
                 try:
                     closeSellOrder()
                 except:
@@ -165,13 +162,13 @@ class start:
                 break
 
         while bl > ol:
-            if macd > sign and current > psar and self.openPosition == 0:
+            if macd > sign and self.openPosition == 0:
                 clearOrders()
                 placeBuyOrder()
                 print('Placed BUY ORDER')
                 break
                 
-            if current < psar and self.openPosition > 0:
+            if macd < sign and self.openPosition > 0:
                 try:
                     closeBuyOrder()
                 except:
