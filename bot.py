@@ -62,6 +62,8 @@ class start:
     def strategy(self):
         df = self.df
 
+        current = float(df['close'][499])
+
         blue = EMA(df['close'], timeperiod=50)
         orange = EMA(df['close'], timeperiod=200)
 
