@@ -62,7 +62,7 @@ class start:
 
         df = self.df
 
-        macd, macdsignal, macdhist = MACD(df['close'], fastperiod=12, slowperiod=26, signalperiod=9)
+        macd, macdsignal, macdhist = MACD(df['close'], fastperiod=7, slowperiod=21, signalperiod=3)
         macd = float(macd[499])
         sign = float(macdsignal[499])
         hist = float(macdhist[499])
