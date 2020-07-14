@@ -4,8 +4,8 @@ import time
 import datetime
 import Binance
 import math
-from talib import EMA, MACD, STOCH
-
+from talib import MACD, STOCH
+import quou
 
 def floatPrecision(f, n):
     n = int(math.log10(1 / float(n)))
@@ -67,12 +67,6 @@ class start:
         sign = float(macdsignal[499])
         hist = float(macdhist[499])
 
-        blue = EMA(df['close'], timeperiod=50)
-        red = EMA(df['close'], timeperiod=200)
-
-        bl = float(blue[499])
-        rl = float(red[499])
-
         slowk, slowd = STOCH(df['high'], df['low'], df['close'], fastk_period=14, slowk_period=3, slowk_matype=0, slowd_period=3, slowd_matype=0)
 
         k = float(slowk[499])
@@ -108,7 +102,7 @@ class start:
                 type = 'MARKET',
                 quantity = self.Quant)
 
-        while bl > rl:
+        while quou.marketSide == 'BULL':
             if macd > sign and k > d and self.openPosition == 0:
                 placeBuyOrder()
                 print('BUY ORDER PLACED AT', df['close'][499])
@@ -120,7 +114,7 @@ class start:
                 except:
                     pass
         
-        while bl < rl:
+        while quou.marketSide == 'BEAR':
             if macd < sign and k < d and self.openPosition == 0:
                 placeSellOrder()
                 print('SELL ORDER PLACED AT', df['close'][499])
