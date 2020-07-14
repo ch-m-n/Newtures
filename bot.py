@@ -26,7 +26,7 @@ class start:
         self.openPosition = float(Binance.client.futures_position_information()[6]['positionAmt'])
         self.quoteBalance = float(Binance.client.futures_account_balance(asset=self.quote)['balance'])
         self.baseBalance = float(Binance.client.futures_get_all_orders(symbol=self.symbol)[-1]['origQty'])
-        self.buyQuant = self.checkQuant()
+        self.Quant = self.checkQuant()
         self.fire = self.strategy()
         
     def getData(self):
