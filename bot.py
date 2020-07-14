@@ -4,9 +4,8 @@ import time
 import datetime
 import Binance
 import math
-from talib import EMA, MACD
+from talib import EMA, MACD, STOCH
 
-#info = Binance.client.get_account()
 
 def floatPrecision(f, n):
     n = int(math.log10(1 / float(n)))
@@ -24,10 +23,10 @@ class start:
         self.interval = interval
         self.df = self.getData()
         self.changeLeverage = self.changeLeverage()
-        self.quoteBalance = Binance.client.futures_account_balance(asset=self.quote)['balance']
-        self.baseBalance = Binance.client.futures_get_all_orders(symbol=self.symbol)[-1]['origQty']
         self.openPosition = float(Binance.client.futures_position_information()[6]['positionAmt'])
-        self.Quant = self.checkQuant()
+        self.quoteBalance = float(Binance.client.futures_account_balance(asset=self.quote)['balance'])
+        self.baseBalance = float(Binance.client.futures_get_all_orders(symbol=self.symbol)[-1]['origQty'])
+        self.buyQuant = self.checkQuant()
         self.fire = self.strategy()
         
     def getData(self):
@@ -60,29 +59,24 @@ class start:
         return BuySellQuant
 
     def strategy(self):
+
         df = self.df
-
-        current = float(df['close'][499])
-
-        blue = EMA(df['close'], timeperiod=50)
-        orange = EMA(df['close'], timeperiod=200)
-
-        bl = float(blue[499])
-        ol = float(orange[499])
 
         macd, macdsignal, macdhist = MACD(df['close'], fastperiod=12, slowperiod=26, signalperiod=9)
         macd = float(macd[499])
         sign = float(macdsignal[499])
         hist = float(macdhist[499])
 
-        longSL = float(floatPrecision((current - current*0.005), self.step_size))
-        longTP = float(floatPrecision((current + current*0.01), self.step_size))
-        shortSL = float(floatPrecision((current + current*0.005), self.step_size))
-        shortTP = float(floatPrecision((current - current*0.01), self.step_size))
+        blue = EMA(df['close'], timeperiod=50)
+        red = EMA(df['close'], timeperiod=200)
 
-        def clearOrders():
-            order = Binance.client.futures_cancel_all_open_orders(
-                symbol = self.symbol)
+        bl = float(blue[499])
+        rl = float(red[499])
+
+        slowk, slowd = STOCH(df['high'], df['low'], df['close'], fastk_period=14, slowk_period=3, slowk_matype=0, slowd_period=3, slowd_matype=0)
+
+        k = float(slowk[499])
+        d = float(slowd[499])
 
         def closeSellOrder():
             orderBuy = Binance.client.futures_create_order(
@@ -91,7 +85,6 @@ class start:
                 type = 'MARKET',
                 quantity = self.baseBalance,
                 reduceOnly='true')
-            clearOrders()
 
         def closeBuyOrder():
             orderSell = Binance.client.futures_create_order(
@@ -100,7 +93,6 @@ class start:
                 type = 'MARKET',
                 quantity = self.baseBalance,
                 reduceOnly='true')
-            clearOrders()
 
         def placeSellOrder():
             orderSell = Binance.client.futures_create_order(
@@ -116,67 +108,33 @@ class start:
                 type = 'MARKET',
                 quantity = self.Quant)
 
-        def longStop():
-            order = Binance.client.futures_create_order(
-                symbol = self.symbol,
-                side = 'SELL',
-                type = 'STOP_MARKET',
-                stopPrice = longSL,
-                closePosition='true')
-
-        def shortStop():
-            order = Binance.client.futures_create_order(
-                symbol = self.symbol,
-                side = 'BUY',
-                type = 'STOP_MARKET',
-                stopPrice = shortSL,
-                closePosition='true')
-
-        def longProfit():
-            order = Binance.client.futures_create_order(
-                symbol = self.symbol,
-                side = 'SELL',
-                type = 'TAKE_PROFIT_MARKET',
-                stopPrice = longTP,
-                closePosition='true')
-
-        def shortProfit():
-            order = Binance.client.futures_create_order(
-                symbol = self.symbol,
-                side = 'BUY',
-                type = 'TAKE_PROFIT_MARKET',
-                stopPrice = shortTP,
-                closePosition='true')
-
-        while bl < ol:
-            if macd < sign and self.openPosition == 0:
-                clearOrders()
-                placeSellOrder()
-                print('Placed SELL ORDER')
-                break
-
-            if hist > 0 and self.openPosition < 0:
-                try:
-                    closeSellOrder()
-                except:
-                    pass
-                print('Closed SELL ORDER')
-                break
-
-        while bl > ol:
-            if macd > sign and self.openPosition == 0:
-                clearOrders()
+        while bl > rl:
+            if macd > sign and k > d and self.openPosition == 0:
                 placeBuyOrder()
-                print('Placed BUY ORDER')
+                print('BUY ORDER PLACED AT', df['close'][499])
                 break
-                
-            if hist < 0 and self.openPosition > 0:
+            if k < d and self.openPosition > 0:
                 try:
                     closeBuyOrder()
+                    print('BUY ORDER CLOSED AT', df['close'][499])
                 except:
                     pass
-                print('Closed BUY ORDER')
+            else:
+                print('NO GO!')
+        
+        while bl < rl:
+            if macd < sign and k < d and self.openPosition == 0:
+                placeSellOrder()
+                print('SELL ORDER PLACED AT', df['close'][499])
                 break
+            if k > d and self.openPosition < 0:
+                try:
+                    closeSellOrder()
+                    print('SELL ORDER CLOSED AT', df['close'][499])
+                except:
+                    pass
+            else:
+                print('NO GO!')
 
 def main():
     symbol = 'TRXUSDT'
@@ -190,6 +148,6 @@ def main():
 
 if __name__ == '__main__':
     while True:
-        if datetime.datetime.now().minute % 15 == 0:
+        if datetime.datetime.now().minute % 1 == 0:
             main()
         time.sleep(60)
