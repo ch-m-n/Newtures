@@ -5,6 +5,7 @@ import datetime
 import Binance
 import math
 from talib import MACD, STOCH
+import higherFrame
 import quou
 
 def floatPrecision(f, n):
@@ -140,5 +141,6 @@ def main():
 if __name__ == '__main__':
     while True:
         if datetime.datetime.now().minute % 15 == 0:
+            higherFrame.main()
             main()
         time.sleep(60)
