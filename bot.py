@@ -4,7 +4,7 @@ import time
 import datetime
 import Binance
 import math
-from talib import EMA, MACD
+from talib import EMA, MACD, STOCH
 
 #info = Binance.client.get_account()
 
@@ -71,7 +71,7 @@ class start:
         macd, macdsignal, macdhist = MACD(df['close'], fastperiod=12, slowperiod=26, signalperiod=9)
         macd = float(macd[499])
         sign = float(macdsignal[499])
-        current = float(floatPrecision(df['close'][499], self.step_size))
+        hist = float(macdhist[499])
 
         longSL = float(floatPrecision((current - current*0.005), self.step_size))
         longTP = float(floatPrecision((current + current*0.01), self.step_size))
@@ -153,7 +153,7 @@ class start:
                 print('Placed SELL ORDER')
                 break
 
-            if macd > sign and self.openPosition < 0:
+            if hist > 0 and self.openPosition < 0:
                 try:
                     closeSellOrder()
                 except:
@@ -168,7 +168,7 @@ class start:
                 print('Placed BUY ORDER')
                 break
                 
-            if macd < sign and self.openPosition > 0:
+            if hist < 0 and self.openPosition > 0:
                 try:
                     closeBuyOrder()
                 except:
