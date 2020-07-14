@@ -119,8 +119,6 @@ class start:
                     print('BUY ORDER CLOSED AT', df['close'][499])
                 except:
                     pass
-            else:
-                print('NO GO!')
         
         while bl < rl:
             if macd < sign and k < d and self.openPosition == 0:
@@ -133,8 +131,7 @@ class start:
                     print('SELL ORDER CLOSED AT', df['close'][499])
                 except:
                     pass
-            else:
-                print('NO GO!')
+
 
 def main():
     symbol = 'TRXUSDT'
