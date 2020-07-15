@@ -1,4 +1,5 @@
 python-binance==0.7.5
 pandas
 schedule
+numpy
 tulipy

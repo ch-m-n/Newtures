@@ -105,31 +105,31 @@ class start:
 
         if quou.marketSide == 'BULL':
             while macd > sign and k > d:
-                if self.status == 'SELL':
+                if self.openPosition == 0:
                     placeBuyOrder()
                     print('BUY ORDER PLACED AT', df['close'][499])
                     break
-            while k < d:
-                if self.status > 'BUY':
+           while k < d:
+                if self.openPosition > 0:
                     try:
                         closeBuyOrder()
                         print('BUY ORDER CLOSED AT', df['close'][499])
                     except:
-                        pass
+                        break
             
-        if quou.marketSide == 'BEAR':
+         if quou.marketSide == 'BEAR':
             while macd < sign and k < d:
-                if self.status == 'BUY':
+                if self.openPosition == 0:
                     placeSellOrder()
                     print('SELL ORDER PLACED AT', df['close'][499])
                     break
-            if k > d:
-                if self.status == 'SELL':
+            while k > d:
+                if self.openPosition < 0:
                     try:
                         closeSellOrder()
                         print('SELL ORDER CLOSED AT', df['close'][499])
                     except:
-                        pass
+                        break
 
 
 def main():
