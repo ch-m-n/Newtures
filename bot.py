@@ -109,7 +109,7 @@ class start:
                     placeBuyOrder()
                     print('BUY ORDER PLACED AT', df['close'][499])
                     break
-           while k < d:
+            while k < d:
                 if self.openPosition > 0:
                     try:
                         closeBuyOrder()
