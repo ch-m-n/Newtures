@@ -24,7 +24,7 @@ class start:
         self.interval = interval
         self.df = self.getData()
         self.changeLeverage = self.changeLeverage()
-        self.openPosition = float(Binance.client.futures_position_information()[6]['positionAmt'])
+        self.status = Binance.client.futures_get_all_orders(symbol=self.symbol)[-1]['status']
         self.quoteBalance = float(Binance.client.futures_account_balance(asset=self.quote)['balance'])
         self.baseBalance = float(Binance.client.futures_get_all_orders(symbol=self.symbol)[-1]['origQty'])
         self.Quant = self.checkQuant()
@@ -104,11 +104,11 @@ class start:
                 quantity = self.Quant)
 
         while quou.marketSide == 'BULL':
-            if macd > sign and k > d and self.openPosition == 0:
+            if macd > sign and k > d and self.status == 'SELL':
                 placeBuyOrder()
                 print('BUY ORDER PLACED AT', df['close'][499])
                 break
-            if k < d and self.openPosition > 0:
+            if k < d and self.status > 'BUY':
                 try:
                     closeBuyOrder()
                     print('BUY ORDER CLOSED AT', df['close'][499])
@@ -116,11 +116,11 @@ class start:
                     pass
         
         while quou.marketSide == 'BEAR':
-            if macd < sign and k < d and self.openPosition == 0:
+            if macd < sign and k < d and self.status == 'BUY':
                 placeSellOrder()
                 print('SELL ORDER PLACED AT', df['close'][499])
                 break
-            if k > d and self.openPosition < 0:
+            if k > d and self.status == 'SELL':
                 try:
                     closeSellOrder()
                     print('SELL ORDER CLOSED AT', df['close'][499])

@@ -17,6 +17,7 @@ class start:
         self.symbol = symbol
         self.interval = interval
         self.df = self.getData()
+        self.baseBalance = Binance.client.futures_get_all_orders(symbol=self.symbol)[-1]['origQty']
         self.fire = self.strategy()
         
     def getData(self):
@@ -41,6 +42,39 @@ class start:
         orange = EMA(df['close'], timeperiod=200)
         bl = float(blue[499])
         ol = float(orange[499])
+
+        def placeBuyOrder():
+            orderBuy = Binance.client.futures_create_order(
+                symbol = self.symbol,
+                side = 'BUY',
+                type = 'MARKET',
+                quantity = 1)
+
+        def placeSellOrder():
+            orderSell = Binance.client.futures_create_order(
+                symbol = self.symbol,
+                side = 'SELL',
+                type = 'MARKET',
+                quantity = 1)
+        
+        def closeSellOrder():
+            orderBuy = Binance.client.futures_create_order(
+                symbol = self.symbol,
+                side = 'BUY',
+                type = 'MARKET',
+                quantity = self.baseBalance,
+                reduceOnly='true'
+                )
+
+        def closeBuyOrder():
+            orderSell = Binance.client.futures_create_order(
+                symbol = self.symbol,
+                side = 'SELL',
+                type = 'MARKET',
+                quantity = self.baseBalance,
+                reduceOnly='true'
+                )
+
         
         while ol < bl:
             quou.changeSideBull()
@@ -50,6 +84,9 @@ class start:
                     closeSellOrder()
                 except:
                     pass
+                placeBuyOrder()
+                time.sleep(1)
+                placeSellOrder()
                 quou.changeBullTimes1()
                 quou.changeBearTimes0()
                 print('BULLISH')
@@ -65,6 +102,9 @@ class start:
                     closeBuyOrder()
                 except:
                     pass
+                placeSellOrder()
+                time.sleep(1)
+                placeBuyOrder()
                 quou.changeBearTimes1()
                 quou.changeBullTimes0()
                 print('BEARISH')
