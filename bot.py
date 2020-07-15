@@ -116,7 +116,7 @@ class start:
                     except:
                         break
             
-         if quou.marketSide == 'BEAR':
+        if quou.marketSide == 'BEAR':
             while macd < sign and k < d:
                 if self.openPosition == 0:
                     placeSellOrder()
