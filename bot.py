@@ -3,7 +3,7 @@ import time
 import datetime
 import Binance
 import math
-from talib import MACD, STOCH
+from talib import MACD
 import higherFrame
 import quou
 
@@ -67,10 +67,9 @@ class start:
         sign = float(macdsignal[499])
         hist = float(macdhist[499])
 
-        slowk, slowd = STOCH(df['high'], df['low'], df['close'], fastk_period=14, slowk_period=3, slowk_matype=0, slowd_period=3, slowd_matype=0)
-
-        k = float(slowk[499])
-        d = float(slowd[499])
+        def clearOrders():
+            order = Binance.client.futures_cancel_all_open_orders(
+                symbol = self.symbol)
 
         def closeSellOrder():
             orderBuy = Binance.client.futures_create_order(
@@ -79,6 +78,7 @@ class start:
                 type = 'MARKET',
                 quantity = self.baseBalance,
                 reduceOnly='true')
+            clearOrders()
 
         def closeBuyOrder():
             orderSell = Binance.client.futures_create_order(
@@ -87,6 +87,7 @@ class start:
                 type = 'MARKET',
                 quantity = self.baseBalance,
                 reduceOnly='true')
+            clearOrders()
 
         def placeSellOrder():
             orderSell = Binance.client.futures_create_order(
@@ -102,13 +103,54 @@ class start:
                 type = 'MARKET',
                 quantity = self.Quant)
 
+        def longStop():
+            order = Binance.client.futures_create_order(
+                symbol = self.symbol,
+                side = 'SELL',
+                type = 'STOP_MARKET',
+                stopPrice = longSL,
+                closePosition='true')
+
+        def shortStop():
+            order = Binance.client.futures_create_order(
+                symbol = self.symbol,
+                side = 'BUY',
+                type = 'STOP_MARKET',
+                stopPrice = shortSL,
+                closePosition='true')
+
+        def longProfit():
+            order = Binance.client.futures_create_order(
+                symbol = self.symbol,
+                side = 'SELL',
+                type = 'TAKE_PROFIT_MARKET',
+                stopPrice = longTP,
+                closePosition='true')
+
+        def shortProfit():
+            order = Binance.client.futures_create_order(
+                symbol = self.symbol,
+                side = 'BUY',
+                type = 'TAKE_PROFIT_MARKET',
+                stopPrice = shortTP,
+                closePosition='true')
+
+            orderBuy = Binance.client.futures_create_order(
+                symbol = self.symbol,
+                side = 'BUY',
+                type = 'MARKET',
+                quantity = self.Quant)
+
         if quou.marketSide == 'BULL':
-            while macd > sign and k > d:
+            while macd > sign:
                 if self.openPosition == 0:
+                    clearOrders()
+                    longStop()
+                    longStop()
                     placeBuyOrder()
                     print('BUY ORDER PLACED AT', df['close'][499])
                     break
-            while k < d:
+            while hist < 0:
                 if self.openPosition > 0:
                     try:
                         closeBuyOrder()
@@ -117,12 +159,15 @@ class start:
                         break
             
         if quou.marketSide == 'BEAR':
-            while macd < sign and k < d:
+            while macd < sign:
                 if self.openPosition == 0:
+                    clearOrders()
+                    shortStop()
+                    shortProfit()
                     placeSellOrder()
                     print('SELL ORDER PLACED AT', df['close'][499])
                     break
-            while k > d:
+            while hist > 0:
                 if self.openPosition < 0:
                     try:
                         closeSellOrder()
