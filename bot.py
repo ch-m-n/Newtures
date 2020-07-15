@@ -103,29 +103,33 @@ class start:
                 type = 'MARKET',
                 quantity = self.Quant)
 
-        while quou.marketSide == 'BULL':
-            if macd > sign and k > d and self.status == 'SELL':
-                placeBuyOrder()
-                print('BUY ORDER PLACED AT', df['close'][499])
-                break
-            if k < d and self.status > 'BUY':
-                try:
-                    closeBuyOrder()
-                    print('BUY ORDER CLOSED AT', df['close'][499])
-                except:
-                    pass
-        
-        while quou.marketSide == 'BEAR':
-            if macd < sign and k < d and self.status == 'BUY':
-                placeSellOrder()
-                print('SELL ORDER PLACED AT', df['close'][499])
-                break
-            if k > d and self.status == 'SELL':
-                try:
-                    closeSellOrder()
-                    print('SELL ORDER CLOSED AT', df['close'][499])
-                except:
-                    pass
+        if quou.marketSide == 'BULL':
+            while macd > sign and k > d:
+                if self.status == 'SELL':
+                    placeBuyOrder()
+                    print('BUY ORDER PLACED AT', df['close'][499])
+                    break
+            while k < d:
+                if self.status > 'BUY':
+                    try:
+                        closeBuyOrder()
+                        print('BUY ORDER CLOSED AT', df['close'][499])
+                    except:
+                        pass
+            
+        if quou.marketSide == 'BEAR':
+            while macd < sign and k < d:
+                if self.status == 'BUY':
+                    placeSellOrder()
+                    print('SELL ORDER PLACED AT', df['close'][499])
+                    break
+            if k > d:
+                if self.status == 'SELL':
+                    try:
+                        closeSellOrder()
+                        print('SELL ORDER CLOSED AT', df['close'][499])
+                    except:
+                        pass
 
 
 def main():
