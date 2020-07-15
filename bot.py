@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 import time
 import datetime
 import Binance
@@ -24,7 +23,7 @@ class start:
         self.interval = interval
         self.df = self.getData()
         self.changeLeverage = self.changeLeverage()
-        self.status = Binance.client.futures_get_all_orders(symbol=self.symbol)[-1]['status']
+        self.openPosition = float(Binance.client.futures_position_information()[6]['positionAmt'])
         self.quoteBalance = float(Binance.client.futures_account_balance(asset=self.quote)['balance'])
         self.baseBalance = float(Binance.client.futures_get_all_orders(symbol=self.symbol)[-1]['origQty'])
         self.Quant = self.checkQuant()
