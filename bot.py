@@ -3,9 +3,8 @@ import time
 import datetime
 import Binance
 import math
-from talib import MACD
-import higherFrame
-import quou
+from talib import TRIX, EMA, SAR
+
 
 def floatPrecision(f, n):
     n = int(math.log10(1 / float(n)))
@@ -62,9 +61,17 @@ class start:
 
         df = self.df
 
-        macd, macdsignal, macdhist = MACD(df['close'], fastperiod=7, slowperiod=21, signalperiod=3)
-        macd = float(macd[499])
-        sign = float(macdsignal[499])
+        blue = EMA(df['close'], timeperiod=50)
+        orange = EMA(df['close'], timeperiod=200)
+        bl = float(blue[499])
+        ol = float(orange[499])
+
+        trix = TRIX(df['close'], timeperiod=10)
+        tx = float(trix[499])*100
+
+        blue = EMA(df['close'], timeperiod=7)
+        trema = TRIX(blue, timeperiod=10)
+        tema = float(trema[499])*100
 
         current = float(floatPrecision(df['close'][499], self.step_size))
 
@@ -143,8 +150,8 @@ class start:
                 stopPrice = shortTP,
                 closePosition='true')
 
-        if quou.marketSide == 'BULL':
-            while macd > sign:
+        if bl > ol:
+            while tx > tema:
                 if self.openPosition == 0:
                     clearOrders()
                     longStop()
@@ -152,15 +159,20 @@ class start:
                     placeBuyOrder()
                     print('BUY ORDER PLACED AT', df['close'][499], 'where MACD', macd, 'is greater than sign', sign)
                     break
-            while macd < sign:
+                if self.openPosition > 0:
+                    break
+
+            while tx < tema:
                 if self.openPosition > 0:
                     try:
                         closeBuyOrder()
                     except:
                         pass
+                if self.openPosition == 0:
+                    break
                 
-        if quou.marketSide == 'BEAR':
-            while macd < sign:
+        if bl < ol:
+            while tx < tema:
                 if self.openPosition == 0:
                     clearOrders()
                     shortStop()
@@ -168,12 +180,17 @@ class start:
                     placeSellOrder()
                     print('SELL ORDER PLACED AT', df['close'][499], 'where MACD', macd, 'is less than sign', sign)
                     break
-            while macd > sign:
+                if self.openPosition < 0:
+                    break
+
+            while tx > tema:
                 if self.openPosition < 0:
                     try:
                         closeSellOrder()
                     except:
                         pass
+                if self.openPosition == 0:
+                    break
 
 def main():
     symbol = 'TRXUSDT'
@@ -187,7 +204,4 @@ def main():
 
 if __name__ == '__main__':
     while True:
-        if datetime.datetime.now().minute % 15 == 0:
-            higherFrame.main()
-            main()
-        time.sleep(60)
+        main()
