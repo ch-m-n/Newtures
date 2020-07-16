@@ -162,12 +162,6 @@ class start:
                     placeBuyOrder()
                     print('BUY ORDER PLACED AT', df['close'][499], 'where MACD', macd, 'is greater than sign', sign)
                     break
-            while hist < 0:
-                if self.openPosition > 0:
-                    try:
-                        closeBuyOrder()
-                    except:
-                        break
             
         if quou.marketSide == 'BEAR':
             while macd < sign:
@@ -178,12 +172,6 @@ class start:
                     placeSellOrder()
                     print('SELL ORDER PLACED AT', df['close'][499], 'where MACD', macd, 'is less than sign', sign)
                     break
-            while hist > 0:
-                if self.openPosition < 0:
-                    try:
-                        closeSellOrder()
-                    except:
-                        break
 
 
 def main():
