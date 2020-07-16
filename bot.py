@@ -154,7 +154,7 @@ class start:
                 if self.openPosition == 0:
                     clearOrders()
                     longStop()
-                    longStop()
+                    longProfit()
                     placeBuyOrder()
                     print('BUY ORDER PLACED AT', df['close'][499], 'where MACD', macd, 'is greater than sign', sign)
                     break
