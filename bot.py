@@ -160,7 +160,7 @@ class start:
                     print('BUY ORDER PLACED AT', df['close'][499], 'where MACD', macd, 'is greater than sign', sign)
                     break
                 if self.openPosition > 0:
-                    print('NO')
+                    break
 
             while tx < tema:
                 if self.openPosition > 0:
@@ -169,7 +169,7 @@ class start:
                     except:
                         pass
                 if self.openPosition == 0:
-                    print('NO')
+                    break
                 
         if bl < ol:
             while tx < tema:
@@ -181,7 +181,7 @@ class start:
                     print('SELL ORDER PLACED AT', df['close'][499], 'where MACD', macd, 'is less than sign', sign)
                     break
                 if self.openPosition < 0:
-                    print('NO')
+                    break
 
             while tx > tema:
                 if self.openPosition < 0:
@@ -190,7 +190,7 @@ class start:
                     except:
                         pass
                 if self.openPosition == 0:
-                    print('NO')
+                    break
 
 def main():
     symbol = 'TRXUSDT'
