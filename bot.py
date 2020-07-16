@@ -157,7 +157,7 @@ class start:
                     longStop()
                     longProfit()
                     placeBuyOrder()
-                    print('BUY ORDER PLACED AT', df['close'][499], 'where MACD', macd, 'is greater than sign', sign)
+                    print('BUY ORDER PLACED')
                     break
                 if self.openPosition > 0:
                     print('NO')
@@ -180,7 +180,7 @@ class start:
                     shortStop()
                     shortProfit()
                     placeSellOrder()
-                    print('SELL ORDER PLACED AT', df['close'][499], 'where MACD', macd, 'is less than sign', sign)
+                    print('SELL ORDER PLACED')
                     break
                 if self.openPosition < 0:
                     print('NO')
