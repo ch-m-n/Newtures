@@ -54,7 +54,7 @@ class start:
 
     def checkQuant(self):
         df = self.df    
-        canBuySell = (float(self.quoteBalance)/float(self.df['close'][499]))*0.1*self.leverage
+        canBuySell = (float(self.quoteBalance)/float(self.df['close'][499]))*0.05*self.leverage
         BuySellQuant = floatPrecision(canBuySell, 1)
         return BuySellQuant
 
