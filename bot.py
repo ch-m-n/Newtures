@@ -152,7 +152,13 @@ class start:
                     placeBuyOrder()
                     print('BUY ORDER PLACED AT', df['close'][499], 'where MACD', macd, 'is greater than sign', sign)
                     break
-            
+            while macd < sign:
+                if self.openPosition > 0:
+                    try:
+                        closeBuyOrder()
+                    except:
+                        pass
+                
         if quou.marketSide == 'BEAR':
             while macd < sign:
                 if self.openPosition == 0:
@@ -162,6 +168,12 @@ class start:
                     placeSellOrder()
                     print('SELL ORDER PLACED AT', df['close'][499], 'where MACD', macd, 'is less than sign', sign)
                     break
+            while macd > sign:
+                if self.openPosition < 0:
+                    try:
+                        closeSellOrder()
+                    except:
+                        pass
 
 def main():
     symbol = 'TRXUSDT'
