@@ -67,6 +67,16 @@ class start:
         sign = float(macdsignal[499])
         hist = float(macdhist[499])
 
+        macd = float("{:.5f}".format(macd))
+        sign = float("{:.5f}".format(sign))
+
+        current = float(floatPrecision(df['close'][499], self.step_size))
+
+        longSL = float(floatPrecision((current - current*0.005), self.step_size))
+        longTP = float(floatPrecision((current + current*0.01), self.step_size))
+        shortSL = float(floatPrecision((current + current*0.005), self.step_size))
+        shortTP = float(floatPrecision((current - current*0.01), self.step_size))
+
         def clearOrders():
             order = Binance.client.futures_cancel_all_open_orders(
                 symbol = self.symbol)
@@ -150,7 +160,7 @@ class start:
                     longStop()
                     longStop()
                     placeBuyOrder()
-                    print('BUY ORDER PLACED AT', df['close'][499])
+                    print('BUY ORDER PLACED AT', df['close'][499], 'where MACD', macd, 'is greater than sign', sign)
                     break
             while hist < 0:
                 if self.openPosition > 0:
@@ -166,7 +176,7 @@ class start:
                     shortStop()
                     shortProfit()
                     placeSellOrder()
-                    print('SELL ORDER PLACED AT', df['close'][499])
+                    print('SELL ORDER PLACED AT', df['close'][499], 'where MACD', macd, 'is less than sign', sign)
                     break
             while hist > 0:
                 if self.openPosition < 0:
@@ -174,6 +184,7 @@ class start:
                         closeSellOrder()
                     except:
                         break
+
 
 def main():
     symbol = 'TRXUSDT'
