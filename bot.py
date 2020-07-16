@@ -143,12 +143,6 @@ class start:
                 stopPrice = shortTP,
                 closePosition='true')
 
-            orderBuy = Binance.client.futures_create_order(
-                symbol = self.symbol,
-                side = 'BUY',
-                type = 'MARKET',
-                quantity = self.Quant)
-
         if quou.marketSide == 'BULL':
             while macd > sign:
                 if self.openPosition == 0:
