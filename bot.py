@@ -65,10 +65,6 @@ class start:
         macd, macdsignal, macdhist = MACD(df['close'], fastperiod=7, slowperiod=21, signalperiod=3)
         macd = float(macd[499])
         sign = float(macdsignal[499])
-        hist = float(macdhist[499])
-
-        macd = float("{:.5f}".format(macd))
-        sign = float("{:.5f}".format(sign))
 
         current = float(floatPrecision(df['close'][499], self.step_size))
 
@@ -172,7 +168,6 @@ class start:
                     placeSellOrder()
                     print('SELL ORDER PLACED AT', df['close'][499], 'where MACD', macd, 'is less than sign', sign)
                     break
-
 
 def main():
     symbol = 'TRXUSDT'
