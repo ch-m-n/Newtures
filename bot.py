@@ -199,9 +199,5 @@ def main():
     step_size = 0.00001
     leverage = 75
     interval = '15m'
-    
     step1 = start(symbol, quote, base, step_size, leverage, interval)
 
-if __name__ == '__main__':
-    while True:
-        main()
