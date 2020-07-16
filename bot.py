@@ -79,6 +79,7 @@ class start:
                 quantity = self.baseBalance,
                 reduceOnly='true')
             clearOrders()
+            print('SELL ORDER CLOSED AT', df['close'][499])
 
         def closeBuyOrder():
             orderSell = Binance.client.futures_create_order(
@@ -88,6 +89,7 @@ class start:
                 quantity = self.baseBalance,
                 reduceOnly='true')
             clearOrders()
+            print('SELL ORDER CLOSED AT', df['close'][499])
 
         def placeSellOrder():
             orderSell = Binance.client.futures_create_order(
@@ -154,7 +156,6 @@ class start:
                 if self.openPosition > 0:
                     try:
                         closeBuyOrder()
-                        print('BUY ORDER CLOSED AT', df['close'][499])
                     except:
                         break
             
@@ -171,10 +172,8 @@ class start:
                 if self.openPosition < 0:
                     try:
                         closeSellOrder()
-                        print('SELL ORDER CLOSED AT', df['close'][499])
                     except:
                         break
-
 
 def main():
     symbol = 'TRXUSDT'
