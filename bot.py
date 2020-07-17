@@ -153,9 +153,6 @@ class start:
         if bl > ol:
             while tx > tema and k > d:
                 if self.openPosition == 0:
-                    clearOrders()
-                    longStop()
-                    longProfit()
                     placeBuyOrder()
                     print('BUY ORDER PLACED')
                     break
@@ -176,9 +173,6 @@ class start:
         if bl < ol:
             while tx < tema:
                 if self.openPosition == 0:
-                    clearOrders()
-                    shortStop()
-                    shortProfit()
                     placeSellOrder()
                     print('SELL ORDER PLACED')
                     break
