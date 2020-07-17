@@ -95,8 +95,6 @@ class start:
                 type = 'MARKET',
                 quantity = self.baseBalance,
                 reduceOnly='true')
-            clearOrders()
-            print('SELL ORDER CLOSED AT', df['close'][499])
 
         def closeBuyOrder():
             orderSell = Binance.client.futures_create_order(
@@ -105,8 +103,6 @@ class start:
                 type = 'MARKET',
                 quantity = self.baseBalance,
                 reduceOnly='true')
-            clearOrders()
-            print('SELL ORDER CLOSED AT', df['close'][499])
 
         def placeSellOrder():
             orderSell = Binance.client.futures_create_order(
