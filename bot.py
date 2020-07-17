@@ -153,7 +153,7 @@ class start:
         if bl > ol:
             while tx > tema and au > ad:
                 if self.openPosition == 0:
-                    placeBuyOrder()
+                    #placeBuyOrder()
                     print('BUY ORDER PLACED')
                     break
                 if self.openPosition > 0:
@@ -173,7 +173,7 @@ class start:
         if bl < ol:
             while tx < tema and au < ad:
                 if self.openPosition == 0:
-                    placeSellOrder()
+                    #placeSellOrder()
                     print('SELL ORDER PLACED')
                     break
                 if self.openPosition < 0:
