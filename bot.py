@@ -3,7 +3,7 @@ import time
 import datetime
 import Binance
 import math
-from talib import TRIX, EMA, SAR
+from talib import TRIX, EMA
 
 
 def floatPrecision(f, n):
@@ -151,7 +151,7 @@ class start:
                 closePosition='true')
 
         if bl > ol:
-            while tx > tema:
+            while tx > tema and k > d:
                 if self.openPosition == 0:
                     clearOrders()
                     longStop()
