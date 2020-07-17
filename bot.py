@@ -3,7 +3,7 @@ import time
 import datetime
 import Binance
 import math
-from talib import TRIX, EMA
+from talib import TRIX, EMA, AROON
 
 
 def floatPrecision(f, n):
@@ -72,6 +72,10 @@ class start:
         blue = EMA(df['close'], timeperiod=7)
         trema = TRIX(blue, timeperiod=10)
         tema = float(trema[499])*100
+
+        aroondown, aroonup = AROON(df['high'], df['low'], timeperiod=7)
+        ad = float(aroondown[499])
+        au = float(aroonup[499])
 
         current = float(floatPrecision(df['close'][499], self.step_size))
 
@@ -151,7 +155,7 @@ class start:
                 closePosition='true')
 
         if bl > ol:
-            while tx > tema and k > d:
+            while tx > tema and au > ad:
                 if self.openPosition == 0:
                     placeBuyOrder()
                     print('BUY ORDER PLACED')
@@ -160,7 +164,7 @@ class start:
                     print('NO')
                     break
 
-            while tx < tema:
+            while au < ad:
                 if self.openPosition > 0:
                     try:
                         closeBuyOrder()
@@ -171,7 +175,7 @@ class start:
                     break
                 
         if bl < ol:
-            while tx < tema:
+            while tx < tema and au < ad:
                 if self.openPosition == 0:
                     placeSellOrder()
                     print('SELL ORDER PLACED')
@@ -180,7 +184,7 @@ class start:
                     print('NO')
                     break
 
-            while tx > tema:
+            while au > ad:
                 if self.openPosition < 0:
                     try:
                         closeSellOrder()
