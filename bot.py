@@ -197,7 +197,7 @@ class start:
                 if self.openPosition < 0:
                     try:
                         closeSellOrder()
-                        print('CLOSED SELL OREDER')
+                        print('CLOSED SELL ORDER')
                     except:
                         pass
                 if self.openPosition == 0:
