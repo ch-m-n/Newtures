@@ -3,7 +3,9 @@ import time
 import datetime
 import Binance
 import math
-from talib import TRIX, EMA, AROON
+from talib import TRIX, EMA, ADX, RSI
+import tulipy as ti
+import numpy as np 
 
 
 def floatPrecision(f, n):
@@ -60,23 +62,33 @@ class start:
     def strategy(self):
 
         df = self.df
-
+        #MARKET CONDITION
         blue = EMA(df['close'], timeperiod=50)
         orange = EMA(df['close'], timeperiod=200)
         bl = float(blue[499])
         ol = float(orange[499])
+        
+        #ADX
+        adx = ADX(df['high'], df['low'], df['close'], timeperiod=20)
+        adx = float(adx[499])
 
+        #TRIX EMA
         trix = TRIX(df['close'], timeperiod=10)
         tx = float(trix[499])*100
 
-        blue = EMA(df['close'], timeperiod=7)
-        trema = TRIX(blue, timeperiod=10)
+        red = EMA(df['close'], timeperiod=7)
+        trema = TRIX(red, timeperiod=10)
         tema = float(trema[499])*100
 
-        aroondown, aroonup = AROON(df['high'], df['low'], timeperiod=7)
-        ad = float(aroondown[499])
-        au = float(aroonup[499])
-
+        #STOCHRSI
+        rsi = RSI(df['close'], timeperiod=14)
+        rsinp = rsi.values
+        rsinp = rsinp[np.logical_not(np.isnan(rsinp))]
+        fastd, fastk = ti.stoch(rsinp, rsinp, rsinp, 14, 3, 3)
+        
+        k = float(fastd[-1])
+        d = float(fastk[-1])
+        
         current = float(floatPrecision(df['close'][499], self.step_size))
 
         longSL = float(floatPrecision((current - current*0.005), self.step_size))
@@ -151,19 +163,20 @@ class start:
                 closePosition='true')
 
         if bl > ol:
-            while tx > tema and au > ad:
+            while adx > 20 and tx > tema and k > d:
                 if self.openPosition == 0:
-                    #placeBuyOrder()
+                    placeBuyOrder()
                     print('BUY ORDER PLACED')
                     break
                 if self.openPosition > 0:
                     print('NO')
                     break
 
-            while au < ad:
+            while k < d or tx < tema or adx < 20:
                 if self.openPosition > 0:
                     try:
                         closeBuyOrder()
+                        print('CLOSED BUY ORDER')
                     except:
                         pass
                 if self.openPosition == 0:
@@ -171,19 +184,20 @@ class start:
                     break
                 
         if bl < ol:
-            while tx < tema and au < ad:
+            while adx > 20 and tx < tema and k < d:
                 if self.openPosition == 0:
-                    #placeSellOrder()
+                    placeSellOrder()
                     print('SELL ORDER PLACED')
                     break
                 if self.openPosition < 0:
                     print('NO')
                     break
 
-            while au > ad:
+            while k > d or tx > tema or adx < 20:
                 if self.openPosition < 0:
                     try:
                         closeSellOrder()
+                        print('CLOSED SELL OREDER')
                     except:
                         pass
                 if self.openPosition == 0:
@@ -198,4 +212,6 @@ def main():
     leverage = 75
     interval = '15m'
     step1 = start(symbol, quote, base, step_size, leverage, interval)
+    time.sleep(2)
 
+main()
