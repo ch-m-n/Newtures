@@ -2,3 +2,4 @@ python-binance==0.7.5
 pandas
 numpy
 tulipy
+python-crontab

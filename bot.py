@@ -213,8 +213,4 @@ def main():
     interval = '15m'
     step1 = start(symbol, quote, base, step_size, leverage, interval)
 
-if __name__ == '__main__':
-    while True:
-        if datetime.datetime.now().minute % 15 == 0: 
-            main()
-        time.sleep(60)
+main()
