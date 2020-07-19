@@ -212,4 +212,9 @@ def main():
     leverage = 75
     interval = '15m'
     step1 = start(symbol, quote, base, step_size, leverage, interval)
-    time.sleep(2)
+
+if __name__ == '__main__':
+    while True:
+        if datetime.datetime.now().minute % 15 == 0: 
+            main()
+        time.sleep(1)

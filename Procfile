@@ -1,2 +1,2 @@
 
-clock: python clock.py
+worker: python bot.py
