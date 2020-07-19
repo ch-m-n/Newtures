@@ -210,6 +210,5 @@ def main():
     leverage = 75
     interval = '15m'
     step1 = start(symbol, quote, base, step_size, leverage, interval)
-    time.sleep(2)
 
 main()
