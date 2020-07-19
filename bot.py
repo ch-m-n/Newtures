@@ -217,4 +217,4 @@ if __name__ == '__main__':
     while True:
         if datetime.datetime.now().minute % 15 == 0: 
             main()
-        time.sleep(1)
+        time.sleep(60)
