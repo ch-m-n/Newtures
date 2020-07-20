@@ -203,7 +203,7 @@ class start:
                     break
 
 def main():
-    symbol = 'BNBBUSDT'
+    symbol = 'BNBUSDT'
     quote = 'USDT'
     base = 'BNB'
     step_size = 0.001

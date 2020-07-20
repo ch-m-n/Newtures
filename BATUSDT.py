@@ -203,7 +203,7 @@ class start:
                     break
 
 def main():
-    symbol = 'BATBUSDT'
+    symbol = 'BATUSDT'
     quote = 'USDT'
     base = 'BAT'
     step_size = 0.0001
