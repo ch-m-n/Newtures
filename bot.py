@@ -67,22 +67,22 @@ class start:
         ol = float(orange[499])
         
         #ADX
-        adx = ADX(df['high'], df['low'], df['close'], timeperiod=20)
+        adx = ADX(df['high'], df['low'], df['close'], timeperiod=14)
         adx = float(adx[499])
 
         #TRIX EMA
-        trix = TRIX(df['close'], timeperiod=10)
+        trix = TRIX(df['close'], timeperiod=20)
         tx = float(trix[499])*100
 
         red = EMA(df['close'], timeperiod=7)
-        trema = TRIX(red, timeperiod=10)
+        trema = TRIX(red, timeperiod=20)
         tema = float(trema[499])*100
 
         #STOCHRSI
         rsi = RSI(df['close'], timeperiod=14)
         rsinp = rsi.values
         rsinp = rsinp[np.logical_not(np.isnan(rsinp))]
-        fastd, fastk = ti.stoch(rsinp, rsinp, rsinp, 14, 3, 3)
+        fastd, fastk = ti.stoch(rsinp, rsinp, rsinp, 14, 5, 3)
         
         k = float(fastd[-1])
         d = float(fastk[-1])
@@ -161,7 +161,7 @@ class start:
                 closePosition='true')
 
         if bl > ol:
-            while adx > 20 and tx > tema and k > d:
+            while adx > 25 and tx > tema and k > d:
                 if self.openPosition == 0:
                     placeBuyOrder()
                     print('BUY ORDER PLACED')
@@ -170,7 +170,7 @@ class start:
                     print('NO')
                     break
 
-            while k < d or tx < tema or adx < 20:
+            while k < d:
                 if self.openPosition > 0:
                     try:
                         closeBuyOrder()
@@ -182,7 +182,7 @@ class start:
                     break
                 
         if bl < ol:
-            while adx > 20 and tx < tema and k < d:
+            while adx > 25 and tx < tema and k < d:
                 if self.openPosition == 0:
                     placeSellOrder()
                     print('SELL ORDER PLACED')
@@ -191,7 +191,7 @@ class start:
                     print('NO')
                     break
 
-            while k > d or tx > tema or adx < 20:
+            while k > d:
                 if self.openPosition < 0:
                     try:
                         closeSellOrder()
