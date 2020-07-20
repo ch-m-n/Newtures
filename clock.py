@@ -15,6 +15,6 @@ def timed_job():
     time.sleep(1)
     
     subprocess.Popen(['python BATUSDT.py'],shell=True)
-    time.time(1)
+    time.sleep(1)
 
 sched.start()
