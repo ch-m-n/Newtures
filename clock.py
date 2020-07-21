@@ -12,12 +12,9 @@ sched = BlockingScheduler()
  
 def timed_job():
     p = bot1.main()
-    p.terminate()
 
     q = bot2.main()
-    q.terminate()
     
     r = bot3.main()
-    r.terminate()
     
 sched.start()
