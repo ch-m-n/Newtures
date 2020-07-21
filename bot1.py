@@ -4,8 +4,7 @@ import math
 from talib import TRIX, EMA, ADX, RSI
 import tulipy as ti
 import numpy as np 
-import time
-import datetime
+
 
 def floatPrecision(f, n):
     n = int(math.log10(1 / float(n)))
@@ -72,11 +71,11 @@ class start:
         adx = float(adx[499])
 
         #TRIX EMA
-        trix = TRIX(df['close'], timeperiod=20)
+        trix = TRIX(df['close'], timeperiod=10)
         tx = float(trix[499])*100
 
         red = EMA(df['close'], timeperiod=7)
-        trema = TRIX(red, timeperiod=20)
+        trema = TRIX(red, timeperiod=10)
         tema = float(trema[499])*100
 
         #STOCHRSI
@@ -98,7 +97,8 @@ class start:
         def clearOrders():
             order = Binance.client.futures_cancel_all_open_orders(
                 symbol = self.symbol)
-            
+            return
+
         def closeSellOrder():
             orderBuy = Binance.client.futures_create_order(
                 symbol = self.symbol,
@@ -106,6 +106,7 @@ class start:
                 type = 'MARKET',
                 quantity = self.baseBalance,
                 reduceOnly='true')
+    
 
         def closeBuyOrder():
             orderSell = Binance.client.futures_create_order(
@@ -115,6 +116,7 @@ class start:
                 quantity = self.baseBalance,
                 reduceOnly='true')
             
+
         def placeSellOrder():
             orderSell = Binance.client.futures_create_order(
                 symbol = self.symbol,
@@ -122,6 +124,7 @@ class start:
                 type = 'MARKET',
                 quantity = self.Quant)
             
+
         def placeBuyOrder():
             orderBuy = Binance.client.futures_create_order(
                 symbol = self.symbol,
@@ -129,6 +132,7 @@ class start:
                 type = 'MARKET',
                 quantity = self.Quant)
             
+
         def longStop():
             order = Binance.client.futures_create_order(
                 symbol = self.symbol,
@@ -137,6 +141,7 @@ class start:
                 stopPrice = longSL,
                 closePosition='true')
             
+
         def shortStop():
             order = Binance.client.futures_create_order(
                 symbol = self.symbol,
@@ -145,6 +150,7 @@ class start:
                 stopPrice = shortSL,
                 closePosition='true')
             
+
         def longProfit():
             order = Binance.client.futures_create_order(
                 symbol = self.symbol,
@@ -153,6 +159,7 @@ class start:
                 stopPrice = longTP,
                 closePosition='true')
             
+
         def shortProfit():
             order = Binance.client.futures_create_order(
                 symbol = self.symbol,
@@ -161,6 +168,7 @@ class start:
                 stopPrice = shortTP,
                 closePosition='true')
             
+
         if bl > ol:
             while adx > 25 and tx > tema and k > d:
                 if self.openPosition == 0:
@@ -202,8 +210,7 @@ class start:
                 if self.openPosition == 0:
                     print('No action on TRX')
                     break
-                        
-
+        
 def main():
     symbol = 'TRXUSDT'
     quote = 'USDT'
@@ -212,5 +219,3 @@ def main():
     leverage = 75
     interval = '15m'
     step1 = start(symbol, quote, base, step_size, leverage, interval)
-
-main()

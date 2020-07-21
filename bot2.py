@@ -71,11 +71,11 @@ class start:
         adx = float(adx[499])
 
         #TRIX EMA
-        trix = TRIX(df['close'], timeperiod=20)
+        trix = TRIX(df['close'], timeperiod=10)
         tx = float(trix[499])*100
 
         red = EMA(df['close'], timeperiod=7)
-        trema = TRIX(red, timeperiod=20)
+        trema = TRIX(red, timeperiod=10)
         tema = float(trema[499])*100
 
         #STOCHRSI
@@ -221,4 +221,3 @@ def main():
     interval = '15m'
     step1 = start(symbol, quote, base, step_size, leverage, interval)
 
-main()

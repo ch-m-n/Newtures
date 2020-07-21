@@ -222,4 +222,3 @@ def main():
     interval = '15m'
     step1 = start(symbol, quote, base, step_size, leverage, interval)
 
-main()

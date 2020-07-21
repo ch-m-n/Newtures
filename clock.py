@@ -2,27 +2,19 @@ import bot1
 import bot2
 import bot3
 from apscheduler.schedulers.blocking import BlockingScheduler
-import threading
+from threading import Thread
 import time
 
 sched = BlockingScheduler()
 
-@sched.scheduled_job('cron', day_of_week='mon-sun', hour = '0-23', minute = '0-59')
-
-def trx():
-    bot1.main()
-def bat():
-    bot2.main()
-
-try:
-    t1 = threading.Thread(target=bat)
-    t2 = threading.Thread(target=trx)
+@sched.scheduled_job('cron', day_of_week='mon-sun', hour = '0-23', minute = '0-59/15')
+def job():
+    time.sleep(1)
+    t1 = Thread(target=bot1.main())
+    t2 = Thread(target=bot2.main())
+    t3 = Thread(target=bot3.main())
     t1.start()
     t2.start()
-    t1.join()
-    t2.join()
-
-except:
-    print ("error")
+    t3.start()
 
 sched.start()
