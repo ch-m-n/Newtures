@@ -12,6 +12,7 @@ sched = BlockingScheduler()
  
 def timed_job():
     p = trxusdt.main()
+    p.terminate()
 
     q = bnbusdt.main()
     q.terminate()
