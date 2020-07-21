@@ -4,6 +4,7 @@ import math
 from talib import TRIX, EMA, ADX, RSI
 import tulipy as ti
 import numpy as np 
+from apscheduler.schedulers.blocking import BlockingScheduler
 
 
 def floatPrecision(f, n):
@@ -211,3 +212,11 @@ def main():
     interval = '15m'
     step1 = start(symbol, quote, base, step_size, leverage, interval)
 
+sched = BlockingScheduler()
+
+@sched.scheduled_job('cron', day_of_week='mon-sun', hour = '0-23', minute = '0-59/15')
+ 
+def timed_job1():
+    main()
+    
+sched.start()
