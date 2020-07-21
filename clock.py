@@ -9,7 +9,7 @@ sched = BlockingScheduler()
 
 @sched.scheduled_job('cron', day_of_week='mon-sun', hour = '0-23', minute = '0-59/15')
 def job():
-    time.sleep(1)
+    
     t1 = Thread(target=bot1.main())
     t2 = Thread(target=bot2.main())
     t3 = Thread(target=bot3.main())
