@@ -4,6 +4,8 @@ import math
 from talib import TRIX, EMA, ADX, RSI
 import tulipy as ti
 import numpy as np 
+import time
+import datetime
 
 def floatPrecision(f, n):
     n = int(math.log10(1 / float(n)))
@@ -105,7 +107,6 @@ class start:
                 type = 'MARKET',
                 quantity = self.baseBalance,
                 reduceOnly='true')
-            
 
         def closeBuyOrder():
             orderSell = Binance.client.futures_create_order(
@@ -115,7 +116,6 @@ class start:
                 quantity = self.baseBalance,
                 reduceOnly='true')
             
-
         def placeSellOrder():
             orderSell = Binance.client.futures_create_order(
                 symbol = self.symbol,

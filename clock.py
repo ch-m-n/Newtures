@@ -3,6 +3,7 @@ import time
 import bot1
 import bot2
 import bot3
+import subprocess
 
 if __name__ == '__main__':
     while True:
