@@ -4,7 +4,6 @@ import math
 from talib import TRIX, EMA, ADX, RSI
 import tulipy as ti
 import numpy as np 
-from apscheduler.schedulers.blocking import BlockingScheduler
 
 
 def floatPrecision(f, n):
@@ -98,6 +97,7 @@ class start:
         def clearOrders():
             order = Binance.client.futures_cancel_all_open_orders(
                 symbol = self.symbol)
+            return
 
         def closeSellOrder():
             orderBuy = Binance.client.futures_create_order(
@@ -106,6 +106,7 @@ class start:
                 type = 'MARKET',
                 quantity = self.baseBalance,
                 reduceOnly='true')
+            return
 
         def closeBuyOrder():
             orderSell = Binance.client.futures_create_order(
@@ -114,6 +115,7 @@ class start:
                 type = 'MARKET',
                 quantity = self.baseBalance,
                 reduceOnly='true')
+            return
 
         def placeSellOrder():
             orderSell = Binance.client.futures_create_order(
@@ -121,6 +123,7 @@ class start:
                 side = 'SELL',
                 type = 'MARKET',
                 quantity = self.Quant)
+            return
 
         def placeBuyOrder():
             orderBuy = Binance.client.futures_create_order(
@@ -128,6 +131,7 @@ class start:
                 side = 'BUY',
                 type = 'MARKET',
                 quantity = self.Quant)
+            return
 
         def longStop():
             order = Binance.client.futures_create_order(
@@ -136,6 +140,7 @@ class start:
                 type = 'STOP_MARKET',
                 stopPrice = longSL,
                 closePosition='true')
+            return
 
         def shortStop():
             order = Binance.client.futures_create_order(
@@ -144,6 +149,7 @@ class start:
                 type = 'STOP_MARKET',
                 stopPrice = shortSL,
                 closePosition='true')
+            return
 
         def longProfit():
             order = Binance.client.futures_create_order(
@@ -152,6 +158,7 @@ class start:
                 type = 'TAKE_PROFIT_MARKET',
                 stopPrice = longTP,
                 closePosition='true')
+            return
 
         def shortProfit():
             order = Binance.client.futures_create_order(
@@ -160,48 +167,50 @@ class start:
                 type = 'TAKE_PROFIT_MARKET',
                 stopPrice = shortTP,
                 closePosition='true')
+            return
 
         if bl > ol:
             while adx > 25 and tx > tema and k > d:
                 if self.openPosition == 0:
                     placeBuyOrder()
-                    print('BUY ORDER PLACED ON BAT')
+                    print('BUY ORDER PLACED on TRX')
                     break
                 if self.openPosition > 0:
-                    print('No action on BAT')
+                    print('No action on TRX')
                     break
 
             while k < d:
                 if self.openPosition > 0:
                     try:
                         closeBuyOrder()
-                        print('CLOSED BUY ORDER ON BAT')
+                        print('CLOSED BUY ORDER on TRX')
                     except:
                         pass
                 if self.openPosition == 0:
-                    print('No action on BAT')
+                    print('No action on TRX')
                     break
                 
         if bl < ol:
             while adx > 25 and tx < tema and k < d:
                 if self.openPosition == 0:
                     placeSellOrder()
-                    print('SELL ORDER PLACED ON BAT')
+                    print('SELL ORDER PLACED on TRX')
                     break
                 if self.openPosition < 0:
-                    print('No action on BAT')
+                    print('No action on TRX')
                     break
 
             while k > d:
                 if self.openPosition < 0:
                     try:
                         closeSellOrder()
-                        print('CLOSED SELL ORDER ON BAT')
+                        print('CLOSED SELL ORDER on TRX')
                     except:
                         pass
                 if self.openPosition == 0:
-                    print('No action on BAT')
+                    print('No action on TRX')
                     break
+        return
 
 def main():
     symbol = 'BATUSDT'
@@ -212,11 +221,3 @@ def main():
     interval = '15m'
     step1 = start(symbol, quote, base, step_size, leverage, interval)
 
-sched = BlockingScheduler()
-
-@sched.scheduled_job('cron', day_of_week='mon-sun', hour = '0-23', minute = '0-59/15')
- 
-def timed_job1():
-    main()
-    
-sched.start()
