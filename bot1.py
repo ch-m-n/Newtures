@@ -202,7 +202,7 @@ class start:
                 if self.openPosition == 0:
                     print('No action on TRX')
                     break
-
+                        
 
 def main():
     symbol = 'TRXUSDT'
