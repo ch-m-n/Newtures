@@ -11,9 +11,9 @@ sched = BlockingScheduler()
 @sched.scheduled_job('cron', day_of_week='mon-sun', hour = '0-23', minute = '0-59')
 
 def trx():
-        bot1.main()
+    bot1.main()
 def bat():
-        bot2.main()
+    bot2.main()
 def bnb():
     bot3.main()
 
@@ -29,5 +29,5 @@ try:
     t3.join()
 except:
     print ("error")
-    
+
 sched.start()
