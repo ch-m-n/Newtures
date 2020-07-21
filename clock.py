@@ -2,7 +2,6 @@ import bot1
 import bot2
 import bot3
 from apscheduler.schedulers.blocking import BlockingScheduler
-from threading
 import threading
 import time
 
@@ -20,7 +19,7 @@ try:
     t2 = threading.Thread(target=trx)
     t1.start()
     t2.start()
-    
+
 except:
     print ("error")
 
