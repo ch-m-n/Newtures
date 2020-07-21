@@ -10,4 +10,4 @@ if __name__ == '__main__':
             bot1.main()
             bot2.main()
             bot3.main()
-        time.sleep(1)
+            time.sleep(1)
