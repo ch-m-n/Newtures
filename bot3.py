@@ -173,42 +173,42 @@ class start:
             while adx > 25 and tx > tema and k > d:
                 if self.openPosition == 0:
                     placeBuyOrder()
-                    print('BUY ORDER PLACED on TRX')
+                    print('BUY ORDER PLACED on BNB')
                     break
                 if self.openPosition > 0:
-                    print('No action on TRX')
+                    print('No action on BNB')
                     break
 
             while k < d:
                 if self.openPosition > 0:
                     try:
                         closeBuyOrder()
-                        print('CLOSED BUY ORDER on TRX')
+                        print('CLOSED BUY ORDER on BNB')
                     except:
                         pass
                 if self.openPosition == 0:
-                    print('No action on TRX')
+                    print('No action on BNB')
                     break
                 
         if bl < ol:
             while adx > 25 and tx < tema and k < d:
                 if self.openPosition == 0:
                     placeSellOrder()
-                    print('SELL ORDER PLACED on TRX')
+                    print('SELL ORDER PLACED on BNB')
                     break
                 if self.openPosition < 0:
-                    print('No action on TRX')
+                    print('No action on BNB')
                     break
 
             while k > d:
                 if self.openPosition < 0:
                     try:
                         closeSellOrder()
-                        print('CLOSED SELL ORDER on TRX')
+                        print('CLOSED SELL ORDER on BNB')
                     except:
                         pass
                 if self.openPosition == 0:
-                    print('No action on TRX')
+                    print('No action on BNB')
                     break
         return
 
