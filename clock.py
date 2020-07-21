@@ -14,19 +14,13 @@ def trx():
     bot1.main()
 def bat():
     bot2.main()
-def bnb():
-    bot3.main()
 
 try:
-    t1 = threading.Thread(target=bnb)
-    t2 = threading.Thread(target=bat)
-    t3 = threading.Thread(target=trx)
+    t1 = threading.Thread(target=bat)
+    t2 = threading.Thread(target=trx)
     t1.start()
     t2.start()
-    t3.start()
-    t1.join()
-    t2.join()
-    t3.join()
+
 except:
     print ("error")
 
