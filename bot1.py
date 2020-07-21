@@ -99,7 +99,6 @@ class start:
             order = Binance.client.futures_cancel_all_open_orders(
                 symbol = self.symbol)
             
-
         def closeSellOrder():
             orderBuy = Binance.client.futures_create_order(
                 symbol = self.symbol,
@@ -123,7 +122,6 @@ class start:
                 type = 'MARKET',
                 quantity = self.Quant)
             
-
         def placeBuyOrder():
             orderBuy = Binance.client.futures_create_order(
                 symbol = self.symbol,
@@ -131,7 +129,6 @@ class start:
                 type = 'MARKET',
                 quantity = self.Quant)
             
-
         def longStop():
             order = Binance.client.futures_create_order(
                 symbol = self.symbol,
@@ -140,7 +137,6 @@ class start:
                 stopPrice = longSL,
                 closePosition='true')
             
-
         def shortStop():
             order = Binance.client.futures_create_order(
                 symbol = self.symbol,
@@ -149,7 +145,6 @@ class start:
                 stopPrice = shortSL,
                 closePosition='true')
             
-
         def longProfit():
             order = Binance.client.futures_create_order(
                 symbol = self.symbol,
@@ -158,7 +153,6 @@ class start:
                 stopPrice = longTP,
                 closePosition='true')
             
-
         def shortProfit():
             order = Binance.client.futures_create_order(
                 symbol = self.symbol,
@@ -167,7 +161,6 @@ class start:
                 stopPrice = shortTP,
                 closePosition='true')
             
-
         if bl > ol:
             while adx > 25 and tx > tema and k > d:
                 if self.openPosition == 0:

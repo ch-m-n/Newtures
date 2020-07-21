@@ -3,3 +3,4 @@ pandas
 numpy
 APScheduler==3.2.0
 tulipy
+python-crontab
