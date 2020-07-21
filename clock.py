@@ -8,7 +8,7 @@ import time
 
 sched = BlockingScheduler()
 
-@sched.scheduled_job('cron', day_of_week='mon-sun', hour = '0-23', minute = '0-59')
+@sched.scheduled_job('cron', day_of_week='mon-sun', hour = '0-23', minute = '0-59/15')
 
 def trx():
     bot1.main()
