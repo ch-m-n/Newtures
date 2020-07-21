@@ -7,10 +7,13 @@ import time
 
 sched = BlockingScheduler()
 
-@sched.scheduled_job('cron', day_of_week='mon-sun', hour = '0-23', minute = '0-59/15')
+@sched.scheduled_job('cron', day_of_week='mon-sun', hour = '0-23', minute = '0-59')
 def timed_job():
-    subprocess.Popen(['python bot1.py'],shell=True).wait()
-    subprocess.Popen(['python bot2.py'],shell=True).wait()
-    subprocess.Popen(['python bot3.py'],shell=True).wait()
+    p = subprocess.Popen(['python bot1.py'])
+    p.terminate()
+    q = subprocess.Popen(['python bot2.py'])
+    q.terminate()
+    r = subprocess.Popen(['python bot3.py'])
+    r.terminate()
 
 sched.start()
