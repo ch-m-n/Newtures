@@ -97,7 +97,7 @@ class start:
         def clearOrders():
             order = Binance.client.futures_cancel_all_open_orders(
                 symbol = self.symbol)
-            return
+            
 
         def closeSellOrder():
             orderBuy = Binance.client.futures_create_order(
@@ -106,7 +106,7 @@ class start:
                 type = 'MARKET',
                 quantity = self.baseBalance,
                 reduceOnly='true')
-            return
+            
 
         def closeBuyOrder():
             orderSell = Binance.client.futures_create_order(
@@ -115,7 +115,7 @@ class start:
                 type = 'MARKET',
                 quantity = self.baseBalance,
                 reduceOnly='true')
-            return
+            
 
         def placeSellOrder():
             orderSell = Binance.client.futures_create_order(
@@ -131,7 +131,7 @@ class start:
                 side = 'BUY',
                 type = 'MARKET',
                 quantity = self.Quant)
-            return
+            
 
         def longStop():
             order = Binance.client.futures_create_order(
@@ -140,7 +140,7 @@ class start:
                 type = 'STOP_MARKET',
                 stopPrice = longSL,
                 closePosition='true')
-            return
+            
 
         def shortStop():
             order = Binance.client.futures_create_order(
@@ -149,7 +149,7 @@ class start:
                 type = 'STOP_MARKET',
                 stopPrice = shortSL,
                 closePosition='true')
-            return
+            
 
         def longProfit():
             order = Binance.client.futures_create_order(
@@ -158,7 +158,7 @@ class start:
                 type = 'TAKE_PROFIT_MARKET',
                 stopPrice = longTP,
                 closePosition='true')
-            return
+            
 
         def shortProfit():
             order = Binance.client.futures_create_order(
@@ -167,7 +167,7 @@ class start:
                 type = 'TAKE_PROFIT_MARKET',
                 stopPrice = shortTP,
                 closePosition='true')
-            return
+            
 
         if bl > ol:
             while adx > 25 and tx > tema and k > d:
@@ -210,7 +210,7 @@ class start:
                 if self.openPosition == 0:
                     print('No action on BNB')
                     break
-        return
+        
 
 
 def main():
