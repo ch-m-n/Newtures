@@ -210,8 +210,7 @@ class start:
                 if self.openPosition == 0:
                     print('No action on BAT')
                     break
-        return
-
+                
 def run_bat():
     symbol = 'BATUSDT'
     quote = 'USDT'

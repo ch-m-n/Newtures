@@ -210,7 +210,7 @@ class start:
                 if self.openPosition == 0:
                     print('No action on XLM')
                     break
-        return
+
 def run_xlm():
     symbol = 'XLMUSDT'
     quote = 'USDT'

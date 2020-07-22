@@ -210,7 +210,7 @@ class start:
                 if self.openPosition == 0:
                     print('No action on VET')
                     break
-        return
+        
 def run_vet():
     symbol = 'VETUSDT'
     quote = 'USDT'
