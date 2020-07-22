@@ -71,11 +71,11 @@ class start:
         adx = float(adx[499])
 
         #TRIX EMA
-        trix = TRIX(df['close'], timeperiod=10)
+        trix = TRIX(df['close'], timeperiod=20)
         tx = float(trix[499])*100
 
         red = EMA(df['close'], timeperiod=7)
-        trema = TRIX(red, timeperiod=10)
+        trema = TRIX(red, timeperiod=20)
         tema = float(trema[499])*100
 
         #STOCHRSI
