@@ -219,4 +219,3 @@ def run_bat():
     leverage = 50
     interval = '15m'
     step1 = start(symbol, quote, base, step_size, leverage, interval)
-
