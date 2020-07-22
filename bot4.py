@@ -211,7 +211,7 @@ class start:
                     print('No action on VET')
                     break
         return
-def main():
+def run_vet():
     symbol = 'VETUSDT'
     quote = 'USDT'
     base = 'VET'

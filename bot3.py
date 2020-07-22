@@ -211,7 +211,7 @@ class start:
                     print('No action on XLM')
                     break
         return
-def main():
+def run_xlm():
     symbol = 'XLMUSDT'
     quote = 'USDT'
     base = 'XLM'

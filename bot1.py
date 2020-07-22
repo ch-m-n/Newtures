@@ -204,7 +204,7 @@ class start:
                     break
         return
         
-def main():
+def run_trx():
     symbol = 'TRXUSDT'
     quote = 'USDT'
     base = 'TRX'

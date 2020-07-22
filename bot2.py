@@ -212,7 +212,7 @@ class start:
                     break
         return
 
-def main():
+def run_bat():
     symbol = 'BATUSDT'
     quote = 'USDT'
     base = 'BAT'
