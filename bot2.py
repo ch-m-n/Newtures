@@ -210,7 +210,7 @@ class start:
                 if self.openPosition == 0:
                     print('No action on BAT')
                     break
-        
+        return
 
 def main():
     symbol = 'BATUSDT'
@@ -221,3 +221,4 @@ def main():
     interval = '15m'
     step1 = start(symbol, quote, base, step_size, leverage, interval)
 
+main()

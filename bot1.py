@@ -107,7 +107,6 @@ class start:
                 quantity = self.baseBalance,
                 reduceOnly='true')
     
-
         def closeBuyOrder():
             orderSell = Binance.client.futures_create_order(
                 symbol = self.symbol,
@@ -116,7 +115,6 @@ class start:
                 quantity = self.baseBalance,
                 reduceOnly='true')
             
-
         def placeSellOrder():
             orderSell = Binance.client.futures_create_order(
                 symbol = self.symbol,
@@ -124,7 +122,6 @@ class start:
                 type = 'MARKET',
                 quantity = self.Quant)
             
-
         def placeBuyOrder():
             orderBuy = Binance.client.futures_create_order(
                 symbol = self.symbol,
@@ -132,7 +129,6 @@ class start:
                 type = 'MARKET',
                 quantity = self.Quant)
             
-
         def longStop():
             order = Binance.client.futures_create_order(
                 symbol = self.symbol,
@@ -141,7 +137,6 @@ class start:
                 stopPrice = longSL,
                 closePosition='true')
             
-
         def shortStop():
             order = Binance.client.futures_create_order(
                 symbol = self.symbol,
@@ -150,7 +145,6 @@ class start:
                 stopPrice = shortSL,
                 closePosition='true')
             
-
         def longProfit():
             order = Binance.client.futures_create_order(
                 symbol = self.symbol,
@@ -159,7 +153,6 @@ class start:
                 stopPrice = longTP,
                 closePosition='true')
             
-
         def shortProfit():
             order = Binance.client.futures_create_order(
                 symbol = self.symbol,
@@ -168,7 +161,6 @@ class start:
                 stopPrice = shortTP,
                 closePosition='true')
             
-
         if bl > ol:
             while adx > 25 and tx > tema and k > d:
                 if self.openPosition == 0:
@@ -210,6 +202,7 @@ class start:
                 if self.openPosition == 0:
                     print('No action on TRX')
                     break
+        return
         
 def main():
     symbol = 'TRXUSDT'
@@ -220,3 +213,4 @@ def main():
     interval = '15m'
     step1 = start(symbol, quote, base, step_size, leverage, interval)
 
+main()

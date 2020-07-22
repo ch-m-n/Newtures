@@ -22,7 +22,7 @@ class start:
         self.interval = interval
         self.df = self.getData()
         self.changeLeverage = self.changeLeverage()
-        self.openPosition = float(Binance.client.futures_position_information()[-9]['positionAmt'])
+        self.openPosition = float(Binance.client.futures_position_information()[9]['positionAmt'])
         self.quoteBalance = float(Binance.client.futures_account_balance(asset=self.quote)['balance'])
         self.baseBalance = float(Binance.client.futures_get_all_orders(symbol=self.symbol)[-1]['origQty'])
         self.Quant = self.checkQuant()
@@ -54,7 +54,7 @@ class start:
     def checkQuant(self):
         df = self.df    
         canBuySell = (float(self.quoteBalance)/float(self.df['close'][499]))*0.05*self.leverage
-        BuySellQuant = floatPrecision(canBuySell, 0.01)
+        BuySellQuant = floatPrecision(canBuySell, 1)
         return BuySellQuant
 
     def strategy(self):
@@ -173,52 +173,51 @@ class start:
             while adx > 25 and tx > tema and k > d:
                 if self.openPosition == 0:
                     placeBuyOrder()
-                    print('BUY ORDER PLACED on BNB')
+                    print('BUY ORDER PLACED on XLM')
                     break
                 if self.openPosition > 0:
-                    print('No action on BNB')
+                    print('No action on XLM')
                     break
 
             while k < d:
                 if self.openPosition > 0:
                     try:
                         closeBuyOrder()
-                        print('CLOSED BUY ORDER on BNB')
+                        print('CLOSED BUY ORDER on XLM')
                     except:
                         pass
                 if self.openPosition == 0:
-                    print('No action on BNB')
+                    print('No action on XLM')
                     break
                 
         if bl < ol:
             while adx > 25 and tx < tema and k < d:
                 if self.openPosition == 0:
                     placeSellOrder()
-                    print('SELL ORDER PLACED on BNB')
+                    print('SELL ORDER PLACED on XLM')
                     break
                 if self.openPosition < 0:
-                    print('No action on BNB')
+                    print('No action on XLM')
                     break
 
             while k > d:
                 if self.openPosition < 0:
                     try:
                         closeSellOrder()
-                        print('CLOSED SELL ORDER on BNB')
+                        print('CLOSED SELL ORDER on XLM')
                     except:
                         pass
                 if self.openPosition == 0:
-                    print('No action on BNB')
+                    print('No action on XLM')
                     break
-        
-
-
+        return
 def main():
-    symbol = 'BNBUSDT'
+    symbol = 'XLMUSDT'
     quote = 'USDT'
-    base = 'BNB'
-    step_size = 0.001
-    leverage = 50
+    base = 'XLM'
+    step_size = 0.00001
+    leverage = 75
     interval = '15m'
     step1 = start(symbol, quote, base, step_size, leverage, interval)
 
+main()
