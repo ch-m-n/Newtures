@@ -1,6 +1,7 @@
 import bot1
 import bot2
 import bot3
+import bot4
 from threading import Thread
 import time
 import datetime
@@ -15,4 +16,5 @@ if __name__ == '__main__':
             bot1.main()
             bot2.main()
             bot3.main()
+            bot4.main()
         time.sleep(sleeptime)
