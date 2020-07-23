@@ -78,14 +78,8 @@ class start:
         trema = TRIX(red, timeperiod=20)
         tema = float(trema[499])*100
 
-        #STOCHRSI
-        rsi = RSI(df['close'], timeperiod=14)
-        rsinp = rsi.values
-        rsinp = rsinp[np.logical_not(np.isnan(rsinp))]
-        fastd, fastk = ti.stoch(rsinp, rsinp, rsinp, 14, 5, 3)
-        
-        k = float(fastd[-1])
-        d = float(fastk[-1])
+        r = RSI(df['close'], timeperiod=5)
+        rsi = float(r[499])
         
         current = float(floatPrecision(df['close'][499], self.step_size))
 
@@ -97,7 +91,7 @@ class start:
         def clearOrders():
             order = Binance.client.futures_cancel_all_open_orders(
                 symbol = self.symbol)
-            return
+            
 
         def closeSellOrder():
             orderBuy = Binance.client.futures_create_order(
@@ -106,7 +100,8 @@ class start:
                 type = 'MARKET',
                 quantity = self.baseBalance,
                 reduceOnly='true')
-    
+            
+
         def closeBuyOrder():
             orderSell = Binance.client.futures_create_order(
                 symbol = self.symbol,
@@ -115,13 +110,15 @@ class start:
                 quantity = self.baseBalance,
                 reduceOnly='true')
             
+
         def placeSellOrder():
             orderSell = Binance.client.futures_create_order(
                 symbol = self.symbol,
                 side = 'SELL',
                 type = 'MARKET',
                 quantity = self.Quant)
-            
+            return
+
         def placeBuyOrder():
             orderBuy = Binance.client.futures_create_order(
                 symbol = self.symbol,
@@ -129,6 +126,7 @@ class start:
                 type = 'MARKET',
                 quantity = self.Quant)
             
+
         def longStop():
             order = Binance.client.futures_create_order(
                 symbol = self.symbol,
@@ -137,6 +135,7 @@ class start:
                 stopPrice = longSL,
                 closePosition='true')
             
+
         def shortStop():
             order = Binance.client.futures_create_order(
                 symbol = self.symbol,
@@ -145,6 +144,7 @@ class start:
                 stopPrice = shortSL,
                 closePosition='true')
             
+
         def longProfit():
             order = Binance.client.futures_create_order(
                 symbol = self.symbol,
@@ -153,6 +153,7 @@ class start:
                 stopPrice = longTP,
                 closePosition='true')
             
+
         def shortProfit():
             order = Binance.client.futures_create_order(
                 symbol = self.symbol,
@@ -161,43 +162,45 @@ class start:
                 stopPrice = shortTP,
                 closePosition='true')
             
+
         if bl > ol:
-            while adx > 25 and tx > tema and k > d:
+            while adx > 25 and tx > tema and rsi > 66.66:
                 if self.openPosition == 0:
                     placeBuyOrder()
-                    print('BUY ORDER PLACED on TRX')
+                    print('BUY ORDER PLACED on', self.base)
                     break
                 if self.openPosition > 0:
-                    print('No action on TRX')
+                    print('No action on', self.base)
                     break
 
-            while k < d:
+            while rsi < 66.66:
                 if self.openPosition > 0:
                     closeBuyOrder()
-                    print('CLOSED BUY ORDER on TRX')
+                    print('CLOSED BUY ORDER on', self.base)
                     break
                 if self.openPosition == 0:
-                    print('No action on TRX')
+                    print('No action on', self.base)
                     break
                 
         if bl < ol:
-            while adx > 25 and tx < tema and k < d:
+            while adx > 25 and tx < tema and rsi < 33.33:
                 if self.openPosition == 0:
                     placeSellOrder()
-                    print('SELL ORDER PLACED on TRX')
+                    print('SELL ORDER PLACED on', self.base)
                     break
                 if self.openPosition < 0:
-                    print('No action on TRX')
+                    print('No action on', self.base)
                     break
 
-            while k > d:
+            while rsi > 33.33:
                 if self.openPosition < 0:
                     closeSellOrder()
-                    print('CLOSED SELL ORDER on TRX')
+                    print('CLOSED SELL ORDER on', self.base)
                     break
                 if self.openPosition == 0:
-                    print('No action on TRX')
+                    print('No action on', self.base)
                     break
+        
                         
 def run_trx():
     symbol = 'TRXUSDT'

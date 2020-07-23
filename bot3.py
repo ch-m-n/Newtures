@@ -78,14 +78,8 @@ class start:
         trema = TRIX(red, timeperiod=20)
         tema = float(trema[499])*100
 
-        #STOCHRSI
-        rsi = RSI(df['close'], timeperiod=14)
-        rsinp = rsi.values
-        rsinp = rsinp[np.logical_not(np.isnan(rsinp))]
-        fastd, fastk = ti.stoch(rsinp, rsinp, rsinp, 14, 5, 3)
-        
-        k = float(fastd[-1])
-        d = float(fastk[-1])
+        r = RSI(df['close'], timeperiod=5)
+        rsi = float(r[499])
         
         current = float(floatPrecision(df['close'][499], self.step_size))
 
@@ -170,43 +164,43 @@ class start:
             
 
         if bl > ol:
-            while adx > 25 and tx > tema and k > d:
+            while adx > 25 and tx > tema and rsi > 66.66:
                 if self.openPosition == 0:
                     placeBuyOrder()
-                    print('BUY ORDER PLACED on XLM')
+                    print('BUY ORDER PLACED on', self.base)
                     break
                 if self.openPosition > 0:
-                    print('No action on XLM')
+                    print('No action on', self.base)
                     break
 
-            while k < d:
+            while rsi < 66.66:
                 if self.openPosition > 0:
                     closeBuyOrder()
-                    print('CLOSED BUY ORDER on XLM')
+                    print('CLOSED BUY ORDER on', self.base)
                     break
                 if self.openPosition == 0:
-                    print('No action on XLM')
+                    print('No action on', self.base)
                     break
                 
         if bl < ol:
-            while adx > 25 and tx < tema and k < d:
+            while adx > 25 and tx < tema and rsi < 33.33:
                 if self.openPosition == 0:
                     placeSellOrder()
-                    print('SELL ORDER PLACED on XLM')
+                    print('SELL ORDER PLACED on', self.base)
                     break
                 if self.openPosition < 0:
-                    print('No action on XLM')
+                    print('No action on', self.base)
                     break
 
-            while k > d:
+            while rsi > 33.33:
                 if self.openPosition < 0:
                     closeSellOrder()
-                    print('CLOSED SELL ORDER on XLM')
+                    print('CLOSED SELL ORDER on', self.base)
                     break
                 if self.openPosition == 0:
-                    print('No action on XLM')
+                    print('No action on', self.base)
                     break
-
+        
 def run_xlm():
     symbol = 'XLMUSDT'
     quote = 'USDT'

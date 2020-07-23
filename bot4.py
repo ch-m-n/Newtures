@@ -22,7 +22,7 @@ class start:
         self.interval = interval
         self.df = self.getData()
         self.changeLeverage = self.changeLeverage()
-        self.openPosition = float(Binance.client.futures_position_information()[-4]['positionAmt'])
+        self.openPosition = float(Binance.client.futures_position_information()[-6]['positionAmt'])
         self.quoteBalance = float(Binance.client.futures_account_balance(asset=self.quote)['balance'])
         self.baseBalance = float(Binance.client.futures_get_all_orders(symbol=self.symbol)[-1]['origQty'])
         self.Quant = self.checkQuant()
@@ -54,7 +54,7 @@ class start:
     def checkQuant(self):
         df = self.df    
         canBuySell = (float(self.quoteBalance)/float(self.df['close'][499]))*0.05*self.leverage
-        BuySellQuant = floatPrecision(canBuySell, 1)
+        BuySellQuant = floatPrecision(canBuySell, 0.1)
         return BuySellQuant
 
     def strategy(self):
@@ -78,14 +78,8 @@ class start:
         trema = TRIX(red, timeperiod=20)
         tema = float(trema[499])*100
 
-        #STOCHRSI
-        rsi = RSI(df['close'], timeperiod=14)
-        rsinp = rsi.values
-        rsinp = rsinp[np.logical_not(np.isnan(rsinp))]
-        fastd, fastk = ti.stoch(rsinp, rsinp, rsinp, 14, 5, 3)
-        
-        k = float(fastd[-1])
-        d = float(fastk[-1])
+        r = RSI(df['close'], timeperiod=5)
+        rsi = float(r[499])
         
         current = float(floatPrecision(df['close'][499], self.step_size))
 
@@ -170,48 +164,48 @@ class start:
             
 
         if bl > ol:
-            while adx > 25 and tx > tema and k > d:
+            while adx > 25 and tx > tema and rsi > 66.66:
                 if self.openPosition == 0:
                     placeBuyOrder()
-                    print('BUY ORDER PLACED on VET')
+                    print('BUY ORDER PLACED on', self.base)
                     break
                 if self.openPosition > 0:
-                    print('No action on VET')
+                    print('No action on', self.base)
                     break
 
-            while k < d:
+            while rsi < 66.66:
                 if self.openPosition > 0:
                     closeBuyOrder()
-                    print('CLOSED BUY ORDER on VET')
+                    print('CLOSED BUY ORDER on', self.base)
                     break
                 if self.openPosition == 0:
-                    print('No action on VET')
+                    print('No action on', self.base)
                     break
                 
         if bl < ol:
-            while adx > 25 and tx < tema and k < d:
+            while adx > 25 and tx < tema and rsi < 33.33:
                 if self.openPosition == 0:
                     placeSellOrder()
-                    print('SELL ORDER PLACED on VET')
+                    print('SELL ORDER PLACED on', self.base)
                     break
                 if self.openPosition < 0:
-                    print('No action on VET')
+                    print('No action on', self.base)
                     break
 
-            while k > d:
+            while rsi > 33.33:
                 if self.openPosition < 0:
                     closeSellOrder()
-                    print('CLOSED SELL ORDER on VET')
+                    print('CLOSED SELL ORDER on', self.base)
                     break
                 if self.openPosition == 0:
-                    print('No action on VET')
+                    print('No action on', self.base)
                     break
         
 def run_vet():
-    symbol = 'VETUSDT'
+    symbol = 'IOTAUSDT'
     quote = 'USDT'
-    base = 'VET'
-    step_size = 0.000001
+    base = 'IOTA'
+    step_size = 0.0001
     leverage = 50
     interval = '15m'
     step1 = start(symbol, quote, base, step_size, leverage, interval)
