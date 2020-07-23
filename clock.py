@@ -5,6 +5,7 @@ import bot4
 import threading
 import time
 import datetime
+from apscheduler.schedulers.blocking import BlockingScheduler
     
 def con():
     print(datetime.datetime.now())
@@ -17,9 +18,10 @@ def con():
     t3.start()
     t4.start()
 
-if __name__ == '__main__':
-    while True:
-        if datetime.datetime.now().minute % 15 == 0:
-            con()
-        time.sleep(60)
+sched = BlockingScheduler()
 
+@sched.scheduled_job('cron', day_of_week='mon-sun', hour = '0-23', minute = '0-59/15')
+def timed_job():
+    con()
+
+sched.start()
