@@ -173,11 +173,9 @@ class start:
 
             while k < d:
                 if self.openPosition > 0:
-                    try:
-                        closeBuyOrder()
-                        print('CLOSED BUY ORDER on TRX')
-                    except:
-                        pass
+                    closeBuyOrder()
+                    print('CLOSED BUY ORDER on TRX')
+                    break
                 if self.openPosition == 0:
                     print('No action on TRX')
                     break
@@ -194,11 +192,9 @@ class start:
 
             while k > d:
                 if self.openPosition < 0:
-                    try:
-                        closeSellOrder()
-                        print('CLOSED SELL ORDER on TRX')
-                    except:
-                        pass
+                    closeSellOrder()
+                    print('CLOSED SELL ORDER on TRX')
+                    break
                 if self.openPosition == 0:
                     print('No action on TRX')
                     break

@@ -181,11 +181,9 @@ class start:
 
             while k < d:
                 if self.openPosition > 0:
-                    try:
-                        closeBuyOrder()
-                        print('CLOSED BUY ORDER on BAT')
-                    except:
-                        pass
+                    closeBuyOrder()
+                    print('CLOSED BUY ORDER on BAT')
+                    break
                 if self.openPosition == 0:
                     print('No action on BAT')
                     break
@@ -202,11 +200,9 @@ class start:
 
             while k > d:
                 if self.openPosition < 0:
-                    try:
-                        closeSellOrder()
-                        print('CLOSED SELL ORDER on BAT')
-                    except:
-                        pass
+                    closeSellOrder()
+                    print('CLOSED SELL ORDER on BAT')
+                    break
                 if self.openPosition == 0:
                     print('No action on BAT')
                     break
