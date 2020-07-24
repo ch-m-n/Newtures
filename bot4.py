@@ -67,7 +67,7 @@ class start:
         ol = float(orange[499])
         
         #ADX
-        adx = ADX(df['high'], df['low'], df['close'], timeperiod=14)
+        adx = ADX(df['high'], df['low'], df['close'], timeperiod=20)
         adx = float(adx[499])
 
         #TRIX EMA
