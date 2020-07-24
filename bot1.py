@@ -67,19 +67,25 @@ class start:
         ol = float(orange[499])
         
         #ADX
-        adx = ADX(df['high'], df['low'], df['close'], timeperiod=20)
+        adx = ADX(df['high'], df['low'], df['close'], timeperiod=14)
         adx = float(adx[499])
 
         #TRIX EMA
-        trix = TRIX(df['close'], timeperiod=12)
+        trix = TRIX(df['close'], timeperiod=14)
         tx = float(trix[499])*100
 
         red = EMA(df['close'], timeperiod=7)
-        trema = TRIX(red, timeperiod=12)
+        trema = TRIX(red, timeperiod=14)
         tema = float(trema[499])*100
 
-        r = RSI(df['close'], timeperiod=5)
-        rsi = float(r[499])
+        """STOCHRSI"""
+        rsi = RSI(df['close'], timeperiod=14)
+        rsinp = rsi.values
+        rsinp = rsinp[np.logical_not(np.isnan(rsinp))]
+        fastd, fastk = ti.stoch(rsinp, rsinp, rsinp, 14, 12, 3)
+        """"""""""""""
+        k = float(fastd[-1])
+        d = float(fastk[-1])
         
         current = float(floatPrecision(df['close'][499], self.step_size))
 
@@ -164,7 +170,7 @@ class start:
             
 
         if bl > ol:
-            while adx > 25 and tx < tema and rsi < 33.33:
+            while adx > 25 and tx > tema and k > d:
                 if self.openPosition == 0:
                     placeBuyOrder()
                     print('BUY ORDER PLACED on', self.base)
@@ -173,7 +179,7 @@ class start:
                     print('No action on', self.base)
                     break
 
-            while rsi > 66.66 and tx > tema:
+            while k < d:
                 if self.openPosition > 0:
                     closeBuyOrder()
                     print('CLOSED BUY ORDER on', self.base)
@@ -183,7 +189,7 @@ class start:
                     break
                 
         if bl < ol:
-            while adx > 25 and tx > tema and rsi > 66.66:
+            while adx > 25 and tx < tema and k < d:
                 if self.openPosition == 0:
                     placeSellOrder()
                     print('SELL ORDER PLACED on', self.base)
@@ -192,7 +198,7 @@ class start:
                     print('No action on', self.base)
                     break
 
-            while rsi > 33.33 and tx < tema:
+            while k > d:
                 if self.openPosition < 0:
                     closeSellOrder()
                     print('CLOSED SELL ORDER on', self.base)
