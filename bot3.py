@@ -71,11 +71,11 @@ class start:
         adx = float(adx[499])
 
         #TRIX EMA
-        trix = TRIX(df['close'], timeperiod=20)
+        trix = TRIX(df['close'], timeperiod=12)
         tx = float(trix[499])*100
 
         red = EMA(df['close'], timeperiod=7)
-        trema = TRIX(red, timeperiod=20)
+        trema = TRIX(red, timeperiod=12)
         tema = float(trema[499])*100
 
         r = RSI(df['close'], timeperiod=5)
@@ -164,7 +164,7 @@ class start:
             
 
         if bl > ol:
-            while adx > 25 and tx > tema and rsi > 66.66:
+            while adx > 25 and tx < tema and rsi < 33.33:
                 if self.openPosition == 0:
                     placeBuyOrder()
                     print('BUY ORDER PLACED on', self.base)
@@ -173,7 +173,7 @@ class start:
                     print('No action on', self.base)
                     break
 
-            while rsi < 66.66:
+            while rsi > 66.66 and tx > tema:
                 if self.openPosition > 0:
                     closeBuyOrder()
                     print('CLOSED BUY ORDER on', self.base)
@@ -183,7 +183,7 @@ class start:
                     break
                 
         if bl < ol:
-            while adx > 25 and tx < tema and rsi < 33.33:
+            while adx > 25 and tx > tema and rsi > 66.66:
                 if self.openPosition == 0:
                     placeSellOrder()
                     print('SELL ORDER PLACED on', self.base)
@@ -192,7 +192,7 @@ class start:
                     print('No action on', self.base)
                     break
 
-            while rsi > 33.33:
+            while rsi > 33.33 and tx < tema:
                 if self.openPosition < 0:
                     closeSellOrder()
                     print('CLOSED SELL ORDER on', self.base)
@@ -200,6 +200,7 @@ class start:
                 if self.openPosition == 0:
                     print('No action on', self.base)
                     break
+        
         
 def run_xlm():
     symbol = 'XLMUSDT'
