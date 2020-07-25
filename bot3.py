@@ -59,6 +59,7 @@ class start:
 
     def strategy(self):
 
+        
         df = self.df
         #MARKET CONDITION
         blue = EMA(df['close'], timeperiod=50)
@@ -67,8 +68,8 @@ class start:
         ol = float(orange[499])
         
         #ADX
-        adx = ADX(df['high'], df['low'], df['close'], timeperiod=14)
-        adx = float(adx[499])
+        atr = ATR(df['high'], df['low'], df['close'], timeperiod=14)
+        atr = float(atr[499])
 
         #TRIX EMA
         trix = TRIX(df['close'], timeperiod=10)
@@ -77,28 +78,18 @@ class start:
         red = EMA(df['close'], timeperiod=7)
         trema = TRIX(red, timeperiod=10)
         tema = float(trema[499])*100
-
-        """STOCHRSI"""
-        rsi = RSI(df['close'], timeperiod=14)
-        rsinp = rsi.values
-        rsinp = rsinp[np.logical_not(np.isnan(rsinp))]
-        fastd, fastk = ti.stoch(rsinp, rsinp, rsinp, 14, 12, 3)
-        """"""""""""""
-        k = float(fastd[-1])
-        d = float(fastk[-1])
         
         current = float(floatPrecision(df['close'][499], self.step_size))
 
-        longSL = float(floatPrecision((current - current*0.005), self.step_size))
+        longSL = float(floatPrecision((current - atr), self.step_size))
         longTP = float(floatPrecision((current + current*0.01), self.step_size))
-        shortSL = float(floatPrecision((current + current*0.005), self.step_size))
+        shortSL = float(floatPrecision((current + atr), self.step_size))
         shortTP = float(floatPrecision((current - current*0.01), self.step_size))
 
         def clearOrders():
             order = Binance.client.futures_cancel_all_open_orders(
                 symbol = self.symbol)
             
-
         def closeSellOrder():
             orderBuy = Binance.client.futures_create_order(
                 symbol = self.symbol,
@@ -107,7 +98,6 @@ class start:
                 quantity = self.baseBalance,
                 reduceOnly='true')
             
-
         def closeBuyOrder():
             orderSell = Binance.client.futures_create_order(
                 symbol = self.symbol,
@@ -116,7 +106,6 @@ class start:
                 quantity = self.baseBalance,
                 reduceOnly='true')
             
-
         def placeSellOrder():
             orderSell = Binance.client.futures_create_order(
                 symbol = self.symbol,
@@ -132,7 +121,6 @@ class start:
                 type = 'MARKET',
                 quantity = self.Quant)
             
-
         def longStop():
             order = Binance.client.futures_create_order(
                 symbol = self.symbol,
@@ -141,7 +129,6 @@ class start:
                 stopPrice = longSL,
                 closePosition='true')
             
-
         def shortStop():
             order = Binance.client.futures_create_order(
                 symbol = self.symbol,
@@ -150,7 +137,6 @@ class start:
                 stopPrice = shortSL,
                 closePosition='true')
             
-
         def longProfit():
             order = Binance.client.futures_create_order(
                 symbol = self.symbol,
@@ -159,7 +145,6 @@ class start:
                 stopPrice = longTP,
                 closePosition='true')
             
-
         def shortProfit():
             order = Binance.client.futures_create_order(
                 symbol = self.symbol,
@@ -167,21 +152,24 @@ class start:
                 type = 'TAKE_PROFIT_MARKET',
                 stopPrice = shortTP,
                 closePosition='true')
-            
 
         if bl > ol:
-            while adx > 25 and tx > tema and k > d:
+            while tx > tema:
                 if self.openPosition == 0:
+                    clearOrders()
                     placeBuyOrder()
+                    longStop()
+                    longProfit()
                     print('BUY ORDER PLACED on', self.base)
                     break
                 if self.openPosition > 0:
                     print('No action on', self.base)
                     break
 
-            while k < d:
+            while tx < tema:
                 if self.openPosition > 0:
                     closeBuyOrder()
+                    clearOrders()
                     print('CLOSED BUY ORDER on', self.base)
                     break
                 if self.openPosition == 0:
@@ -189,23 +177,28 @@ class start:
                     break
                 
         if bl < ol:
-            while adx > 25 and tx < tema and k < d:
+            while tx < tema:
                 if self.openPosition == 0:
+                    clearOrders()
                     placeSellOrder()
+                    shortStop()
+                    shortProfit()
                     print('SELL ORDER PLACED on', self.base)
                     break
                 if self.openPosition < 0:
                     print('No action on', self.base)
                     break
 
-            while k > d:
+            while tx > tema:
                 if self.openPosition < 0:
                     closeSellOrder()
+                    clearOrders()
                     print('CLOSED SELL ORDER on', self.base)
                     break
                 if self.openPosition == 0:
                     print('No action on', self.base)
                     break
+        
         
 def run_xlm():
     symbol = 'XLMUSDT'
