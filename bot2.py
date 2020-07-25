@@ -1,7 +1,7 @@
 import pandas as pd
 import Binance
 import math
-from talib import TRIX, EMA, ADX, RSI
+from talib import TRIX, EMA, ATR
 import tulipy as ti
 import numpy as np 
 
