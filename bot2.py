@@ -1,7 +1,7 @@
 import pandas as pd
 import Binance
 import math
-from talib import TRIX, EMA, ATR
+from talib import TRIX, EMA, ATR, RSI
 import tulipy as ti
 import numpy as np 
 
@@ -79,6 +79,15 @@ class start:
         trema = TRIX(red, timeperiod=10)
         tema = float(trema[499])*100
         
+        """STOCHRSI"""
+        rsi = RSI(df['close'], timeperiod=14)
+        rsinp = rsi.values
+        rsinp = rsinp[np.logical_not(np.isnan(rsinp))]
+        fastd, fastk = ti.stoch(rsinp, rsinp, rsinp, 14, 3, 3)
+        """"""""""""""
+        k = float(fastd[-1])
+        d = float(fastk[-1])
+
         current = float(floatPrecision(df['close'][499], self.step_size))
 
         longSL = float(floatPrecision((current - atr), self.step_size))
@@ -154,7 +163,7 @@ class start:
                 closePosition='true')
 
         if bl > ol:
-            while tx > tema:
+            while tx > tema and k > d:
                 if self.openPosition == 0:
                     clearOrders()
                     placeBuyOrder()
@@ -166,7 +175,7 @@ class start:
                     print('No action on', self.base)
                     break
 
-            while tx < tema:
+            while k < d:
                 if self.openPosition > 0:
                     closeBuyOrder()
                     clearOrders()
@@ -177,7 +186,7 @@ class start:
                     break
                 
         if bl < ol:
-            while tx < tema:
+            while tx < tema and k < d:
                 if self.openPosition == 0:
                     clearOrders()
                     placeSellOrder()
@@ -189,7 +198,7 @@ class start:
                     print('No action on', self.base)
                     break
 
-            while tx > tema:
+            while k > d:
                 if self.openPosition < 0:
                     closeSellOrder()
                     clearOrders()
@@ -198,6 +207,7 @@ class start:
                 if self.openPosition == 0:
                     print('No action on', self.base)
                     break
+        
         
 def run_bat():
     symbol = 'BATUSDT'
