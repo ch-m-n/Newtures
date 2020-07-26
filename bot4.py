@@ -173,16 +173,6 @@ class start:
                 if self.openPosition > 0:
                     print('No action on', self.base)
                     break
-
-            while k < d:
-                if self.openPosition > 0:
-                    closeBuyOrder()
-                    clearOrders()
-                    print('CLOSED BUY ORDER on', self.base)
-                    break
-                if self.openPosition == 0:
-                    print('No action on', self.base)
-                    break
                 
         if bl < ol:
             while tx < tema and k < d:
@@ -197,16 +187,6 @@ class start:
                     print('No action on', self.base)
                     break
 
-            while k > d:
-                if self.openPosition < 0:
-                    closeSellOrder()
-                    clearOrders()
-                    print('CLOSED SELL ORDER on', self.base)
-                    break
-                if self.openPosition == 0:
-                    print('No action on', self.base)
-                    break
-        
 def run_iota():
     symbol = 'IOTAUSDT'
     quote = 'USDT'
