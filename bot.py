@@ -82,7 +82,7 @@ class start:
         k = float(fastd[-1])
         d = float(fastk[-1])
         
-        level0, level236, level382, middle, level618, level786, level1 = fib(df['high'], df['low'], period=89)
+        level0, level236, level382, middle, level618, level786, level1 = fib(df['high'], df['low'], period=144)
 
         current = float(floatPrecision(df['close'][499], self.step_size))
 
