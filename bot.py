@@ -65,10 +65,6 @@ class start:
         atr = ATR(df['high'], df['low'], df['close'], timeperiod=14)
         atr = float(atr[499])
 
-        macd, macdsignal, macdhist = MACD(df['close'], fastperiod=7, slowperiod=21, signalperiod=3)
-        macd = macd[499]
-        sign = macdsignal[499]
-
         """STOCHRSI"""
         rsi = RSI(df['close'], timeperiod=14)
         rsinp = rsi.values
