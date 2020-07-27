@@ -161,6 +161,7 @@ class start:
         if current < level786 and current > level1:
             while k > d and tx > tema:
                 if self.openPosition == 0:
+                    clearOrders()
                     placeBuyOrder()
                     longStop()
                     longProfit()
@@ -173,12 +174,14 @@ class start:
             while tx < tema: 
                 if self.openPosition > 0:
                     closeBuyOrder()
+                    clearOrders()
                     print('CLOSED BUY ORDER on', self.base)
                     break
 
         if current > level236 and current < level0:
             while k < d and tx < tema:
                 if self.openPosition == 0:
+                    clearOrders()
                     placeSellOrder()
                     shortStop()
                     shortProfit()
@@ -191,6 +194,7 @@ class start:
             while tx > tema:
                 if self.openPosition < 0:
                     closeSellOrder()
+                    clearOrders()
                     print('CLOSED SELL ORDER on', self.base)
                     break
                         
