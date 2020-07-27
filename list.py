@@ -38,4 +38,3 @@ iota={
     "roundQuant": 0.1
 }
 
-print(trx['symbol'])
