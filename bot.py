@@ -65,6 +65,14 @@ class start:
         atr = ATR(df['high'], df['low'], df['close'], timeperiod=14)
         atr = float(atr[499])
 
+        
+        trix = TRIX(df['close'], timeperiod=10)
+        tx = float(trix[499])*100
+
+        blue = EMA(df['close'], timeperiod=7)
+        tema = TRIX(blue, timeperiod=10)
+        tema = float(tema[499])*100
+
         """STOCHRSI"""
         rsi = RSI(df['close'], timeperiod=14)
         rsinp = rsi.values
