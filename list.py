@@ -1,40 +1,40 @@
 trx={
-    "symbol": "TRXUSDT",
-    "quote": "USDT",
-    "base": "TRX",
+    "pair": "TRXUSDT",
+    "q": "USDT",
+    "b": "TRX",
     "step": 0.00001,
-    "leverage": 75,
-    "interval": "15m",
-    "roundQuant": 1
+    "levr": 75,
+    "t": "15m",
+    "r": 1
 }
 
 bat={
-    "symbol": "BATUSDT",
-    "quote": "USDT",
-    "base": "BAT",
+    "pair": "BATUSDT",
+    "q": "USDT",
+    "b": "BAT",
     "step": 0.0001,
-    "leverage": 50,
-    "interval": "15m",
-    "roundQuant": 0.1
+    "levr": 50,
+    "t": "15m",
+    "r": 0.1
 }
 
 xlm={
-    "symbol": "XLMUSDT",
-    "quote": "USDT",
-    "base": "XLM",
+    "pair": "XLMUSDT",
+    "q": "USDT",
+    "b": "XLM",
     "step": 0.00001,
-    "leverage": 50,
-    "interval": "15m",
-    "roundQuant": 1
+    "levr": 50,
+    "t": "15m",
+    "r": 1
 }
 
 iota={
-    "symbol": "IOTAUSDT",
-    "quote": "USDT",
-    "base": "IOTA",
+    "pair": "IOTAUSDT",
+    "q": "USDT",
+    "b": "IOTA",
     "step": 0.0001,
-    "leverage": 50,
-    "interval": "15m",
-    "roundQuant": 0.1
+    "levr": 50,
+    "t": "15m",
+    "r": 0.1
 }
 
