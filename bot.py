@@ -13,7 +13,7 @@ def floatPrecision(f, n):
     return str(int(f)) if int(n) == 0 else f
 
 class start:
-    def __init__(self, symbol, quote, base, step_size, leverage, interval, roundQuant):
+    def __init__(self, symbol, quote, base, step_size, leverage, interval, roundQuant, position):
         self.symbol = symbol
         self.quote = quote
         self.base = base
@@ -21,9 +21,10 @@ class start:
         self.leverage = leverage
         self.interval = interval
         self.roundQuant = roundQuant
+        self.position = position
         self.df = self.getData()
         self.changeLeverage = self.changeLeverage()
-        self.openPosition = float(Binance.client.futures_position_information()[6]['positionAmt'])
+        self.openPosition = float(Binance.client.futures_position_information()[self.position]['positionAmt'])
         self.quoteBalance = float(Binance.client.futures_account_balance(asset=self.quote)['balance'])
         self.baseBalance = float(Binance.client.futures_get_all_orders(symbol=self.symbol)[-1]['origQty'])
         self.Quant = self.checkQuant()
@@ -198,7 +199,7 @@ class start:
                     print('CLOSED SELL ORDER on', self.base)
                     break
                         
-def run(pair, q, b, step, levr, t, r):
+def run(pair, q, b, step, levr, t, r, p):
     symbol = pair
     quote = q
     base = b
@@ -206,5 +207,6 @@ def run(pair, q, b, step, levr, t, r):
     leverage = levr
     interval = t
     roundQuant = r
-    step1 = start(symbol, quote, base, step_size, leverage, interval, roundQuant)
+    position = p
+    step1 = start(symbol, quote, base, step_size, leverage, interval, roundQuant, position)
 
