@@ -5,13 +5,17 @@ import datetime
 from apscheduler.schedulers.blocking import BlockingScheduler
 import list
 
-    
+trx = list.trx
+bat = list.bat
+xlm = list.xlm
+iota = list.iota
+
 def con():
     print(datetime.datetime.now())
-    t1 = threading.Thread(target=bot.run(list.**trx))
-    t2 = threading.Thread(target=bot.run(list.**bat))
-    t3 = threading.Thread(target=bot.run(list.**xlm))
-    t4 = threading.Thread(target=bot.run(list.**iota))
+    t1 = threading.Thread(target=bot.run(**trx))
+    t2 = threading.Thread(target=bot.run(**bat))
+    t3 = threading.Thread(target=bot.run(**xlm))
+    t4 = threading.Thread(target=bot.run(**iota))
     t1.start()
     t2.start()
     t3.start()
