@@ -12,10 +12,14 @@ iota = list.iota
 
 def con():
     print(datetime.datetime.now())
-    bot.run(**trx)
-    bot.run(**bat)
-    bot.run(**xlm)
-    bot.run(**iota)
+    t1 = threading.Thread(target=bot.run(**trx))
+    t2 = threading.Thread(target=bot.run(**bat))
+    t3 = threading.Thread(target=bot.run(**xlm))
+    t4 = threading.Thread(target=bot.run(**iota))
+    t1.start()
+    t2.start()
+    t3.start()
+    t4.start()
 
 sched = BlockingScheduler()
 
