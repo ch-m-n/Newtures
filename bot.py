@@ -1,7 +1,7 @@
 import pandas as pd
 import Binance
 import math
-from talib import TRIX, EMA, ATR, RSI
+from talib import MA, ATR, STOCHASTIC
 import tulipy as ti
 import numpy as np 
 from fib_retracement import fib
@@ -66,31 +66,17 @@ class start:
         atr = ATR(df['high'], df['low'], df['close'], timeperiod=14)
         atr = float(atr[499])
 
+        baseline = MA(df['close'], timeperiod=20)
+        baseline = float(baseline[499])
+
+        slowk, slowd = STOCH(high, low, close, fastk_period=14, slowk_period=3, slowk_matype=0, slowd_period=5, slowd_matype=0)
         
-        trix = TRIX(df['close'], timeperiod=10)
-        tx = float(trix[499])*100
-
-        blue = EMA(df['close'], timeperiod=7)
-        tema = TRIX(blue, timeperiod=10)
-        tema = float(tema[499])*100
-
-        """STOCHRSI"""
-        rsi = RSI(df['close'], timeperiod=14)
-        rsinp = rsi.values
-        rsinp = rsinp[np.logical_not(np.isnan(rsinp))]
-        fastd, fastk = ti.stoch(rsinp, rsinp, rsinp, 14, 3, 3)
-        """"""""""""""
-        k = float(fastd[-1])
-        d = float(fastk[-1])
-        
-        level0, level236, level382, middle, level618, level786, level1 = fib(df['high'], df['low'], period=144)
-
         current = float(floatPrecision(df['close'][499], self.step_size))
 
-        longSL = float(floatPrecision((level0 - atr), self.step_size))
-        longTP = float(floatPrecision((level382), self.step_size))
-        shortSL = float(floatPrecision((level1 + atr), self.step_size))
-        shortTP = float(floatPrecision((level618), self.step_size))
+        longSL = float(floatPrecision((current - atr), self.step_size))
+        longTP = float(floatPrecision((current + atr*1.5), self.step_size))
+        shortSL = float(floatPrecision((current + atr), self.step_size))
+        shortTP = float(floatPrecision((current - atr*1.5), self.step_size))
 
         def clearOrders():
             order = Binance.client.futures_cancel_all_open_orders(
@@ -159,7 +145,7 @@ class start:
                 stopPrice = shortTP,
                 closePosition='true')
 
-        if current < level236 and current > level0:
+        if current < baseline:
             while k > d:
                 if self.openPosition == 0:
                     clearOrders()
@@ -172,7 +158,7 @@ class start:
                     print('No action on', self.base)
                     break
 
-        if current > level786 and current < level1:
+        if current > baseline:
             while k < d:
                 if self.openPosition == 0:
                     clearOrders()
