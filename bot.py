@@ -78,7 +78,7 @@ class start:
         rsi = RSI(df['close'], timeperiod=14)
         rsinp = rsi.values
         rsinp = rsinp[np.logical_not(np.isnan(rsinp))]
-        fastd, fastk = ti.stoch(rsinp, rsinp, rsinp, 14, 5, 3)
+        fastd, fastk = ti.stoch(rsinp, rsinp, rsinp, 14, 3, 3)
         """"""""""""""
         k = float(fastd[-1])
         d = float(fastk[-1])
