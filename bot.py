@@ -1,7 +1,7 @@
 import pandas as pd
 import Binance
 import math
-from talib import MA, ATR, STOCHASTIC
+from talib import MA, ATR, STOCH
 import tulipy as ti
 import numpy as np 
 from fib_retracement import fib
