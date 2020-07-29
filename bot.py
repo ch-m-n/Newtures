@@ -87,9 +87,9 @@ class start:
 
         current = float(floatPrecision(df['close'][499], self.step_size))
 
-        longSL = float(floatPrecision((level1 - atr), self.step_size))
+        longSL = float(floatPrecision((level0 - atr), self.step_size))
         longTP = float(floatPrecision((middle), self.step_size))
-        shortSL = float(floatPrecision((level0 + atr), self.step_size))
+        shortSL = float(floatPrecision((level1 + atr), self.step_size))
         shortTP = float(floatPrecision((middle), self.step_size))
 
         def clearOrders():
@@ -159,8 +159,8 @@ class start:
                 stopPrice = shortTP,
                 closePosition='true')
 
-        if current < level786 and current > level1:
-            while k > d and tx > tema:
+        if current > level786 and current < level1:
+            while k > d:
                 if self.openPosition == 0:
                     clearOrders()
                     placeBuyOrder()
@@ -171,16 +171,9 @@ class start:
                 if self.openPosition > 0:
                     print('No action on', self.base)
                     break
-            
-            while tx < tema: 
-                if self.openPosition > 0:
-                    closeBuyOrder()
-                    clearOrders()
-                    print('CLOSED BUY ORDER on', self.base)
-                    break
 
-        if current > level236 and current < level0:
-            while k < d and tx < tema:
+        if current < level236 and current > level0:
+            while k < d:
                 if self.openPosition == 0:
                     clearOrders()
                     placeSellOrder()
@@ -192,13 +185,6 @@ class start:
                     print('No action on', self.base)
                     break
 
-            while tx > tema:
-                if self.openPosition < 0:
-                    closeSellOrder()
-                    clearOrders()
-                    print('CLOSED SELL ORDER on', self.base)
-                    break
-                        
 def run(pair, q, b, step, levr, t, r, p):
     symbol = pair
     quote = q
