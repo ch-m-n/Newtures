@@ -173,7 +173,7 @@ class start:
                     break
 
         if current > level786 and current < level1:
-            while k < d and rlt > 70:
+            while k < d:
                 if self.openPosition == 0:
                     clearOrders()
                     placeSellOrder()
