@@ -65,7 +65,6 @@ class start:
 
         atr = ATR(df['high'], df['low'], df['close'], timeperiod=14)
         atr = float(atr[499])
-
         
         trix = TRIX(df['close'], timeperiod=10)
         tx = float(trix[499])*100
@@ -82,9 +81,6 @@ class start:
         """"""""""""""
         k = float(fastd[-1])
         d = float(fastk[-1])
-
-        rlt = RSI(df['close'], timeperiod=14)
-        rlt = float(rlt[499])
         
         level0, level236, level382, middle, level618, level786, level1 = fib(df['high'], df['low'], period=144)
 
@@ -162,8 +158,8 @@ class start:
                 stopPrice = shortTP,
                 closePosition='true')
 
-        if current < level236 and current > level0:
-            while k > d and rlt < 30:
+        if current > level236 and current < level382:
+            while k > d:
                 if self.openPosition == 0:
                     clearOrders()
                     placeBuyOrder()
@@ -175,8 +171,8 @@ class start:
                     print('No action on', self.base)
                     break
 
-        if current > level786 and current < level1:
-            while k < d and rlt > 70:
+        if current < level786 and current > level618:
+            while k < d:
                 if self.openPosition == 0:
                     clearOrders()
                     placeSellOrder()
