@@ -65,6 +65,7 @@ class start:
 
         atr = ATR(df['high'], df['low'], df['close'], timeperiod=14)
         atr = float(atr[499])
+
         
         trix = TRIX(df['close'], timeperiod=10)
         tx = float(trix[499])*100
@@ -87,9 +88,9 @@ class start:
         current = float(floatPrecision(df['close'][499], self.step_size))
 
         longSL = float(floatPrecision((level0 - atr), self.step_size))
-        longTP = float(floatPrecision((middle), self.step_size))
+        longTP = float(floatPrecision((level382), self.step_size))
         shortSL = float(floatPrecision((level1 + atr), self.step_size))
-        shortTP = float(floatPrecision((middle), self.step_size))
+        shortTP = float(floatPrecision((level618), self.step_size))
 
         def clearOrders():
             order = Binance.client.futures_cancel_all_open_orders(
@@ -158,7 +159,7 @@ class start:
                 stopPrice = shortTP,
                 closePosition='true')
 
-        if current > level236 and current < level382:
+        if current < level236 and current > level0:
             while k > d:
                 if self.openPosition == 0:
                     clearOrders()
@@ -171,8 +172,8 @@ class start:
                     print('No action on', self.base)
                     break
 
-        if current < level786 and current > level618:
-            while k < d:
+        if current > level786 and current < level1:
+            while k < d and rlt > 70:
                 if self.openPosition == 0:
                     clearOrders()
                     placeSellOrder()
