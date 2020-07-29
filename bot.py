@@ -82,6 +82,9 @@ class start:
         """"""""""""""
         k = float(fastd[-1])
         d = float(fastk[-1])
+
+        rlt = RSI(df['close'], timeperiod=14)
+        rlt = float(rlt[499])
         
         level0, level236, level382, middle, level618, level786, level1 = fib(df['high'], df['low'], period=144)
 
@@ -160,7 +163,7 @@ class start:
                 closePosition='true')
 
         if current < level236 and current > level0:
-            while k > d:
+            while k > d and rlt < 30:
                 if self.openPosition == 0:
                     clearOrders()
                     placeBuyOrder()
@@ -173,7 +176,7 @@ class start:
                     break
 
         if current > level786 and current < level1:
-            while k < d:
+            while k < d and rlt > 70:
                 if self.openPosition == 0:
                     clearOrders()
                     placeSellOrder()
