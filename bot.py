@@ -159,7 +159,7 @@ class start:
                 stopPrice = shortTP,
                 closePosition='true')
 
-        if current > level786 and current < level1:
+        if current < level236 and current > level0:
             while k > d:
                 if self.openPosition == 0:
                     clearOrders()
@@ -172,7 +172,7 @@ class start:
                     print('No action on', self.base)
                     break
 
-        if current < level236 and current > level0:
+        if current > level786 and current < level1:
             while k < d:
                 if self.openPosition == 0:
                     clearOrders()
