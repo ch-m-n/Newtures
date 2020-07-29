@@ -70,6 +70,9 @@ class start:
         baseline = float(baseline[499])
 
         slowk, slowd = STOCH(df['high'], df['low'], df['close'], fastk_period=14, slowk_period=3, slowk_matype=0, slowd_period=5, slowd_matype=0)
+
+        k = float(slowk[499])
+        d = float(slowd[499])
         
         current = float(floatPrecision(df['close'][499], self.step_size))
 
