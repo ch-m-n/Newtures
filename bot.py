@@ -162,14 +162,14 @@ class start:
 
             while k < d:
                 if self.openPosition > 0:
-                    clearOrders()
-                    shortStop()
                     closeBuyOrder()
                     print('CLOSED BUY ORDER on', self.base)
 
         if current < baseline:
             while k < d:
                 if self.openPosition == 0:
+                    clearOrders()
+                    shortStop()
                     placeSellOrder()
                     print('SELL ORDER PLACED on', self.base)
                     break
