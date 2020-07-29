@@ -1,7 +1,7 @@
 import pandas as pd
 import Binance
 import math
-from talib import MA, ATR, STOCH
+from talib import EMA, ATR
 import tulipy as ti
 import numpy as np 
 from fib_retracement import fib
@@ -66,7 +66,7 @@ class start:
         atr = ATR(df['high'], df['low'], df['close'], timeperiod=14)
         atr = float(atr[499])
 
-        baseline = MA(df['close'], timeperiod=20)
+        baseline = MA(df['close'], timeperiod=200)
         baseline = float(baseline[499])
 
         slowk, slowd = STOCH(df['high'], df['low'], df['close'], fastk_period=14, slowk_period=3, slowk_matype=0, slowd_period=5, slowd_matype=0)
@@ -148,31 +148,35 @@ class start:
                 stopPrice = shortTP,
                 closePosition='true')
 
-        if current < baseline:
+        if current > baseline:
             while k > d:
                 if self.openPosition == 0:
-                    clearOrders()
                     placeBuyOrder()
-                    longStop()
-                    longProfit()
                     print('BUY ORDER PLACED on', self.base)
                     break
                 if self.openPosition > 0:
                     print('No action on', self.base)
                     break
 
-        if current > baseline:
+            while k < d:
+                if self.openPosition > 0:
+                    closeBuyOrder()
+                    print('CLOSED BUY ORDER on', self.base)
+
+        if current < baseline:
             while k < d:
                 if self.openPosition == 0:
-                    clearOrders()
                     placeSellOrder()
-                    shortStop()
-                    shortProfit()
                     print('SELL ORDER PLACED on', self.base)
                     break
                 if self.openPosition < 0:
                     print('No action on', self.base)
                     break
+
+            while k > d:
+                if self.openPosition < 0:
+                    closeSellOrder()
+                    print('CLOSED SELL ORDER on', self.base)
 
 def run(pair, q, b, step, levr, t, r, p):
     symbol = pair
