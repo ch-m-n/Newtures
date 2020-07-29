@@ -1,7 +1,7 @@
 import pandas as pd
 import Binance
 import math
-from talib import EMA, ATR
+from talib import EMA, ATR, STOCH
 import tulipy as ti
 import numpy as np 
 from fib_retracement import fib
@@ -66,7 +66,7 @@ class start:
         atr = ATR(df['high'], df['low'], df['close'], timeperiod=14)
         atr = float(atr[499])
 
-        baseline = MA(df['close'], timeperiod=200)
+        baseline = EMA(df['close'], timeperiod=200)
         baseline = float(baseline[499])
 
         slowk, slowd = STOCH(df['high'], df['low'], df['close'], fastk_period=14, slowk_period=3, slowk_matype=0, slowd_period=5, slowd_matype=0)
