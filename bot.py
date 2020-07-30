@@ -1,7 +1,7 @@
 import pandas as pd
 import Binance
 import math
-from talib import EMA, ATR, TRIX
+from talib import EMA, ATR, RSI
 import tulipy as ti
 import numpy as np 
 from fib_retracement import fib
@@ -78,12 +78,11 @@ class start:
         k = float(fastd[-1])
         d = float(fastk[-1])
 
-        
         current = float(floatPrecision(df['close'][499], self.step_size))
 
-        longSL = float(floatPrecision((current - atr), self.step_size))
+        longSL = float(floatPrecision((current - atr*2), self.step_size))
         longTP = float(floatPrecision((current + atr*1.5), self.step_size))
-        shortSL = float(floatPrecision((current + atr), self.step_size))
+        shortSL = float(floatPrecision((current + atr*2), self.step_size))
         shortTP = float(floatPrecision((current - atr*1.5), self.step_size))
 
         def clearOrders():
