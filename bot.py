@@ -155,7 +155,7 @@ class start:
                 closePosition='true')
 
         if current > baseline:
-            while tx > tema and low > baseline and low < bullSupport:
+            while tx > tema:
                 if self.openPosition == 0:
                     clearOrders()
                     longStop()
@@ -175,7 +175,7 @@ class start:
                 break
 
         if current < baseline:
-            while tx < tema and high < baseline and high > bearSupport:
+            while tx < tema:
                 if self.openPosition == 0:
                     clearOrders()
                     shortStop()
