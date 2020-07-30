@@ -1,7 +1,7 @@
 import pandas as pd
 import Binance
 import math
-from talib import EMA, ATR, RSI
+from talib import EMA, ATR, STOCH
 import tulipy as ti
 import numpy as np 
 from fib_retracement import fib
@@ -69,14 +69,10 @@ class start:
         baseline = EMA(df['close'], timeperiod=200)
         baseline = float(baseline[499])
 
-        """STOCHRSI"""
-        rsi = RSI(df['close'], timeperiod=14)
-        rsinp = rsi.values
-        rsinp = rsinp[np.logical_not(np.isnan(rsinp))]
-        fastd, fastk = ti.stoch(rsinp, rsinp, rsinp, 14, 3, 5)
-        """"""""""""""
-        k = float(fastd[-1])
-        d = float(fastk[-1])
+        slowk, slowd = STOCH(df['high'], df['low'], df['close'], fastk_period=5, slowk_period=3, slowk_matype=0, slowd_period=3, slowd_matype=0)
+
+        k = float(slowk[499])
+        d = float(slowd[499])
 
         current = float(floatPrecision(df['close'][499], self.step_size))
 
@@ -161,10 +157,10 @@ class start:
                     print('No action on', self.base)
                     break
 
-            while k < d:
-                if self.openPosition > 0:
-                    closeBuyOrder()
-                    print('CLOSED BUY ORDER on', self.base)
+        while k < d:
+            if self.openPosition > 0:
+                closeBuyOrder()
+                print('CLOSED BUY ORDER on', self.base)
 
         if current < baseline:
             while k < d:
@@ -176,10 +172,10 @@ class start:
                     print('No action on', self.base)
                     break
 
-            while k > d:
-                if self.openPosition < 0:
-                    closeSellOrder()
-                    print('CLOSED SELL ORDER on', self.base)
+        while k > d:
+            if self.openPosition < 0:
+                closeSellOrder()
+                print('CLOSED SELL ORDER on', self.base)
 
 def run(pair, q, b, step, levr, t, r, p):
     symbol = pair
