@@ -63,7 +63,7 @@ class start:
 
         df = self.df
 
-        atr = ATR(df['high'], df['low'], df['close'], timeperiod=14)
+        atr = ATR(df['high'], df['low'], df['close'], period=14)
         atr = float(atr[499])
 
         level0, level236, level382, middle, level618, level786, level1 = fib(df['high'], df['low'], timeperiod=34)
