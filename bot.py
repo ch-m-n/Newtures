@@ -1,7 +1,7 @@
 import pandas as pd
 import Binance
 import math
-from talib import EMA, ATR, STOCH
+from talib import EMA, ATR, TRIX
 import tulipy as ti
 import numpy as np 
 from fib_retracement import fib
@@ -69,16 +69,18 @@ class start:
         baseline = EMA(df['close'], timeperiod=200)
         baseline = float(baseline[499])
 
-        slowk, slowd = STOCH(df['high'], df['low'], df['close'], fastk_period=14, slowk_period=3, slowk_matype=0, slowd_period=5, slowd_matype=0)
+        trix = TRIX(df['close'], timeperiod=10)
+        tx = float(trix[499])*100
 
-        k = float(slowk[499])
-        d = float(slowd[499])
+        blue = EMA(df['close'], timeperiod=7)
+        tema = TRIX(blue, timeperiod=10)
+        tema = float(tema[499])*100
         
         current = float(floatPrecision(df['close'][499], self.step_size))
 
-        longSL = float(floatPrecision((current - atr), self.step_size))
+        longSL = float(floatPrecision((baseline - atr), self.step_size))
         longTP = float(floatPrecision((current + atr*1.5), self.step_size))
-        shortSL = float(floatPrecision((current + atr), self.step_size))
+        shortSL = float(floatPrecision((baseline + atr), self.step_size))
         shortTP = float(floatPrecision((current - atr*1.5), self.step_size))
 
         def clearOrders():
@@ -107,7 +109,6 @@ class start:
                 side = 'SELL',
                 type = 'MARKET',
                 quantity = self.Quant)
-            return
 
         def placeBuyOrder():
             orderBuy = Binance.client.futures_create_order(
@@ -149,7 +150,7 @@ class start:
                 closePosition='true')
 
         if current > baseline:
-            while k > d:
+            while tx > tema:
                 if self.openPosition == 0:
                     clearOrders()
                     longStop()
@@ -160,13 +161,13 @@ class start:
                     print('No action on', self.base)
                     break
 
-            while k < d:
+            while tx < tema:
                 if self.openPosition > 0:
                     closeBuyOrder()
                     print('CLOSED BUY ORDER on', self.base)
 
         if current < baseline:
-            while k < d:
+            while tx < tema:
                 if self.openPosition == 0:
                     clearOrders()
                     shortStop()
@@ -177,7 +178,7 @@ class start:
                     print('No action on', self.base)
                     break
 
-            while k > d:
+            while tx > tema:
                 if self.openPosition < 0:
                     closeSellOrder()
                     print('CLOSED SELL ORDER on', self.base)
