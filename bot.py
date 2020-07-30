@@ -161,9 +161,10 @@ class start:
             if self.openPosition > 0:
                 closeBuyOrder()
                 print('CLOSED BUY ORDER on', self.base)
+                break
             if self.openPosition == 0:
                 print('No action on', self.base)
-            
+                break
 
         if current < baseline:
             while k < d:
@@ -179,9 +180,11 @@ class start:
             if self.openPosition < 0:
                 closeSellOrder()
                 print('CLOSED SELL ORDER on', self.base)
+                break
             if self.openPosition == 0:
                 print('No action on', self.base)
-
+                break
+            
 def run(pair, q, b, step, levr, t, r, p):
     symbol = pair
     quote = q
