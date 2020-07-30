@@ -1,7 +1,7 @@
 import pandas as pd
 import Binance
 import math
-from talib import EMA, ATR, STOCH
+from talib import EMA, ATR, RSI
 import tulipy as ti
 import numpy as np 
 from fib_retracement import fib
@@ -66,20 +66,17 @@ class start:
         atr = ATR(df['high'], df['low'], df['close'], timeperiod=14)
         atr = float(atr[499])
 
-        baseline = EMA(df['close'], timeperiod=200)
-        baseline = float(baseline[499])
+        level0, level236, level382, middle, level618, level786, level1 = fib(df['high'], df['low'], timeperiod=34)
 
-        slowk, slowd = STOCH(df['high'], df['low'], df['close'], fastk_period=5, slowk_period=3, slowk_matype=0, slowd_period=3, slowd_matype=0)
-
-        k = float(slowk[499])
-        d = float(slowd[499])
+        rsi = RSI(df['close'], timeperiod=14)
+        rsi = float(rsi[499])
 
         current = float(floatPrecision(df['close'][499], self.step_size))
 
-        longSL = float(floatPrecision((current - atr*2), self.step_size))
-        longTP = float(floatPrecision((current + atr*1.5), self.step_size))
-        shortSL = float(floatPrecision((current + atr*2), self.step_size))
-        shortTP = float(floatPrecision((current - atr*1.5), self.step_size))
+        longSL = float(floatPrecision((level0 - atr), self.step_size))
+        longTP = float(floatPrecision((miđdle), self.step_size))
+        shortSL = float(floatPrecision((level1 + atr), self.step_size))
+        shortTP = float(floatPrecision((middle), self.step_size))
 
         def clearOrders():
             order = Binance.client.futures_cancel_all_open_orders(
@@ -147,9 +144,12 @@ class start:
                 stopPrice = shortTP,
                 closePosition='true')
 
-        if current > baseline:
-            while k > d:
+        if current < level382 and current > level236:
+            while rsi < 50:
                 if self.openPosition == 0:
+                    clearOrders()
+                    longStop()
+                    longProfit()
                     placeBuyOrder()
                     print('BUY ORDER PLACED on', self.base)
                     break
@@ -157,17 +157,8 @@ class start:
                     print('No action on', self.base)
                     break
 
-        while k < d:
-            if self.openPosition > 0:
-                closeBuyOrder()
-                print('CLOSED BUY ORDER on', self.base)
-                break
-            if self.openPosition == 0:
-                print('No action on', self.base)
-                break
-
-        if current < baseline:
-            while k < d:
+        if current < level786 and current > level618:
+            while rsi > 50:
                 if self.openPosition == 0:
                     placeSellOrder()
                     print('SELL ORDER PLACED on', self.base)
@@ -175,15 +166,6 @@ class start:
                 if self.openPosition < 0:
                     print('No action on', self.base)
                     break
-
-        while k > d:
-            if self.openPosition < 0:
-                closeSellOrder()
-                print('CLOSED SELL ORDER on', self.base)
-                break
-            if self.openPosition == 0:
-                print('No action on', self.base)
-                break
             
 def run(pair, q, b, step, levr, t, r, p):
     symbol = pair
