@@ -74,7 +74,7 @@ class start:
         current = float(floatPrecision(df['close'][499], self.step_size))
 
         longSL = float(floatPrecision((level0 - atr), self.step_size))
-        longTP = float(floatPrecision((miđdle), self.step_size))
+        longTP = float(floatPrecision((middle), self.step_size))
         shortSL = float(floatPrecision((level1 + atr), self.step_size))
         shortTP = float(floatPrecision((middle), self.step_size))
 
