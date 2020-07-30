@@ -66,16 +66,16 @@ class start:
         atr = ATR(df['high'], df['low'], df['close'], timeperiod=14)
         atr = float(atr[499])
 
-        level0, level236, level382, middle, level618, level786, level1 = fib(df['high'], df['low'], period=55)
+        level0, level236, level382, middle, level618, level786, level1 = fib(df['high'], df['low'], period=144)
 
         rsi = RSI(df['close'], timeperiod=14)
         rsi = float(rsi[499])
 
         current = float(floatPrecision(df['close'][499], self.step_size))
 
-        longSL = float(floatPrecision((level0 - atr), self.step_size))
+        longSL = float(floatPrecision((level236 - atr), self.step_size))
         longTP = float(floatPrecision((middle), self.step_size))
-        shortSL = float(floatPrecision((level1 + atr), self.step_size))
+        shortSL = float(floatPrecision((level786 + atr), self.step_size))
         shortTP = float(floatPrecision((middle), self.step_size))
 
         def clearOrders():
@@ -145,7 +145,7 @@ class start:
                 closePosition='true')
 
         if current < level382 and current > level236:
-            while rsi < 50:
+            while rsi > 50:
                 if self.openPosition == 0:
                     clearOrders()
                     longStop()
@@ -158,7 +158,7 @@ class start:
                     break
 
         if current < level786 and current > level618:
-            while rsi > 50:
+            while rsi < 50:
                 if self.openPosition == 0:
                     placeSellOrder()
                     print('SELL ORDER PLACED on', self.base)
