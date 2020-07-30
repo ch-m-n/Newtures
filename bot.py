@@ -84,9 +84,9 @@ class start:
         current = float(floatPrecision(df['close'][499], self.step_size))
 
         longSL = float(floatPrecision((baseline - atr), self.step_size))
-        longTP = float(floatPrecision((current + atr*2), self.step_size))
+        longTP = float(floatPrecision((current + atr*3), self.step_size))
         shortSL = float(floatPrecision((baseline + atr), self.step_size))
-        shortTP = float(floatPrecision((current - atr*2), self.step_size))
+        shortTP = float(floatPrecision((current - atr*3), self.step_size))
 
         def clearOrders():
             order = Binance.client.futures_cancel_all_open_orders(
