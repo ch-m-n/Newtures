@@ -1,4 +1,4 @@
-import bot
+import strategy
 import threading
 import time
 import datetime
@@ -12,10 +12,10 @@ iota = list.iota
 
 def con():
     print(datetime.datetime.now())
-    t1 = threading.Thread(target=bot.run(**trx))
-    t2 = threading.Thread(target=bot.run(**bat))
-    t3 = threading.Thread(target=bot.run(**xlm))
-    t4 = threading.Thread(target=bot.run(**iota))
+    t1 = threading.Thread(target=strategy.run(**trx))
+    t2 = threading.Thread(target=strategy.run(**bat))
+    t3 = threading.Thread(target=strategy.run(**xlm))
+    t4 = threading.Thread(target=strategy.run(**iota))
     t1.start()
     t2.start()
     t3.start()

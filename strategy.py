@@ -61,7 +61,7 @@ class start:
     def strategy(self):
 
         df = self.df
-
+        """Prepare indicator for strategy"""
         baseline = MA(df['close'], timeperiod=100)
         baseline = float(baseline[499])
 
@@ -153,6 +153,8 @@ class start:
                 type = 'TAKE_PROFIT_MARKET',
                 stopPrice = shortTP,
                 closePosition='true')
+
+        """Set up your strategy here"""
 
         if current > baseline:
             while tx > tema:
