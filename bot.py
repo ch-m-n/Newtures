@@ -62,24 +62,22 @@ class start:
 
         df = self.df
 
-        baseline = MA(df['close'], timeperiod=100)
+        baseline = EMA(df['close'], timeperiod=20)
         baseline = float(baseline[499])
-
-        bullSupport = baseline + baseline*(self.step_size*50)
-        bearSupport = baseline - baseline*(self.step_size*50)
 
         atr = ATR(df['high'], df['low'], df['close'], timeperiod=14)
         atr = float(atr[499])
 
-        trix = TRIX(df['close'], timeperiod=20)
-        tx = float(trix[499])*100
+        """STOCHRSI"""
+        rsi = RSI(df['close'], timeperiod=5)
+        rsinp = rsi.values
+        rsinp = rsinp[np.logical_not(np.isnan(rsinp))]
+        fastd, fastk = ti.stoch(rsinp, rsinp, rsinp, 14, 9, 3)
+        """"""""""""""
+        k = float(fastd[-1])
+        d = float(fastk[-1])
 
-        blue = EMA(df['close'], timeperiod=7)
-        tema = TRIX(blue, timeperiod=20)
-        tema = float(tema[499])*100
-
-        low = float(floatPrecision(df['low'][499], self.step_size))
-        high = float(floatPrecision(df['high'][499], self.step_size))
+        print(k, d)
 
         current = float(floatPrecision(df['close'][499], self.step_size))
 
@@ -155,11 +153,10 @@ class start:
                 closePosition='true')
 
         if current > baseline:
-            while tx > tema:
+            while k > d:
                 if self.openPosition == 0:
                     clearOrders()
                     longStop()
-                    longProfit()
                     placeBuyOrder()
                     print('BUY ORDER PLACED on', self.base)
                     break
@@ -167,7 +164,7 @@ class start:
                     print('No action on', self.base)
                     break
 
-        while tx < tema:
+        while k < d:
             if self.openPosition > 0:
                 closeBuyOrder()
                 print('Closed BUY ORDER on', self.base)
@@ -175,11 +172,10 @@ class start:
                 break
 
         if current < baseline:
-            while tx < tema:
+            while k < d:
                 if self.openPosition == 0:
                     clearOrders()
                     shortStop()
-                    shortProfit()
                     placeSellOrder()
                     print('SELL ORDER PLACED on', self.base)
                     break
@@ -187,10 +183,11 @@ class start:
                     print('No action on', self.base)
                     break
 
-        while tx < tema:
+        while k < d:
             if self.openPosition > 0:
                 closeSellOrder()
                 print('Closed SELL ORDER on', self.base)
+                clearOrders()
                 break    
 
         

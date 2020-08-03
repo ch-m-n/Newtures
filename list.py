@@ -42,3 +42,14 @@ iota={
     "p": 18
 }
 
+doge={
+    "pair": "DOGEUSDT",
+    "q": "USDT",
+    "b": "DOGE",
+    "step": 0.0000001,
+    "levr": 50,
+    "t": "15m",
+    "r": 1,
+    "p": 31
+}
+
