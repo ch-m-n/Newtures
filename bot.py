@@ -158,22 +158,22 @@ class start:
         closeShortCond = k > d and self.openPosition < 0
 
         while longCond == True:
-            #placeBuyOrder()
+            placeBuyOrder()
             print('BUY ORDER PLACED on', self.base)
             break
             
         while closeLongCond == True:
-            #closeBuyOrder()
+            closeBuyOrder()
             print('Closed BUY ORDER on', self.base)
             break
 
         while shortCond == True:
-            #placeSellOrder()
+            placeSellOrder()
             print('SELL ORDER PLACED on', self.base)
             break
             
         while closeShortCond == True:
-            #closeSellOrder()
+            closeSellOrder()
             print('Closed SELL ORDER on', self.base)
             break
             
