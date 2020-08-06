@@ -1,7 +1,7 @@
 import pandas as pd
 import Binance
 import math
-from talib import EMA, ATR, RSI, TRIX, MA
+from talib import EMA, ATR, RSI, MFI
 import tulipy as ti
 import numpy as np 
 
@@ -54,7 +54,7 @@ class start:
 
     def checkQuant(self):
         df = self.df    
-        canBuySell = (float(self.quoteBalance)/float(self.df['close'][499]))*0.05*self.leverage
+        canBuySell = (float(self.quoteBalance)/float(self.df['close'][499]))*0.04*self.leverage
         BuySellQuant = floatPrecision(canBuySell, self.roundQuant)
         return BuySellQuant
 
@@ -62,8 +62,8 @@ class start:
 
         df = self.df
 
-        baseline = EMA(df['close'], timeperiod=20)
-        baseline = float(baseline[499])
+        mfi = MFI(df['high'], df['low'], df['close'], df['volume'], timeperiod=9)
+        mfi = float(mfi[499])
 
         atr = ATR(df['high'], df['low'], df['close'], timeperiod=14)
         atr = float(atr[499])
@@ -77,14 +77,12 @@ class start:
         k = float(fastd[-1])
         d = float(fastk[-1])
 
-        print(k, d)
-
         current = float(floatPrecision(df['close'][499], self.step_size))
 
-        longSL = float(floatPrecision((baseline - atr), self.step_size))
-        longTP = float(floatPrecision((current + atr*3), self.step_size))
-        shortSL = float(floatPrecision((baseline + atr), self.step_size))
-        shortTP = float(floatPrecision((current - atr*3), self.step_size))
+        #longSL = float(floatPrecision((baseline - atr), self.step_size))
+        #longTP = float(floatPrecision((current + atr*3), self.step_size))
+        #shortSL = float(floatPrecision((baseline + atr), self.step_size))
+        #shortTP = float(floatPrecision((current - atr*3), self.step_size))
 
         def clearOrders():
             order = Binance.client.futures_cancel_all_open_orders(
@@ -152,45 +150,33 @@ class start:
                 stopPrice = shortTP,
                 closePosition='true')
 
-        if current > baseline:
-            while k > d:
-                if self.openPosition == 0:
-                    clearOrders()
-                    longStop()
-                    placeBuyOrder()
-                    print('BUY ORDER PLACED on', self.base)
-                    break
-                if self.openPosition > 0:
-                    print('No action on', self.base)
-                    break
+        """Conditions for trading"""
 
-        while k < d:
-            if self.openPosition > 0:
-                closeBuyOrder()
-                print('Closed BUY ORDER on', self.base)
-                clearOrders()
-                break
+        longCond = k > d and mfi < 30 and self.openPosition == 0
+        closeLongCond = k < d and self.openPosition > 0
+        shortCond = k < d and mfi > 70 and self.openPosition == 0
+        closeShortCond = k > d and self.openPosition < 0
 
-        if current < baseline:
-            while k < d:
-                if self.openPosition == 0:
-                    clearOrders()
-                    shortStop()
-                    placeSellOrder()
-                    print('SELL ORDER PLACED on', self.base)
-                    break
-                if self.openPosition < 0:
-                    print('No action on', self.base)
-                    break
+        while longCond == True:
+            #placeBuyOrder()
+            print('BUY ORDER PLACED on', self.base)
+            break
+            
+        while closeLongCond == True:
+            #closeBuyOrder()
+            print('Closed BUY ORDER on', self.base)
+            break
 
-        while k < d:
-            if self.openPosition > 0:
-                closeSellOrder()
-                print('Closed SELL ORDER on', self.base)
-                clearOrders()
-                break    
-
-        
+        while shortCond == True:
+            #placeSellOrder()
+            print('SELL ORDER PLACED on', self.base)
+            break
+            
+        while closeShortCond == True:
+            #closeSellOrder()
+            print('Closed SELL ORDER on', self.base)
+            break
+            
 def run(pair, q, b, step, levr, t, r, p):
     symbol = pair
     quote = q
@@ -201,4 +187,3 @@ def run(pair, q, b, step, levr, t, r, p):
     roundQuant = r
     position = p
     step1 = start(symbol, quote, base, step_size, leverage, interval, roundQuant, position)
-

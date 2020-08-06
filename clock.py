@@ -6,23 +6,18 @@ from apscheduler.schedulers.blocking import BlockingScheduler
 import list
 
 trx = list.trx
-bat = list.bat
 xlm = list.xlm
-iota = list.iota
 doge = list.doge
 
 def con():
     print(datetime.datetime.now())
     t1 = threading.Thread(target=bot.run(**trx))
-    t2 = threading.Thread(target=bot.run(**bat))
-    t3 = threading.Thread(target=bot.run(**xlm))
-    t4 = threading.Thread(target=bot.run(**iota))
-    t5 = threading.Thread(target=bot.run(**doge))
+    t2 = threading.Thread(target=bot.run(**xlm))
+    t3 = threading.Thread(target=bot.run(**doge))
     t1.start()
     t2.start()
     t3.start()
-    t4.start()
-    t5.start()
+
 
 sched = BlockingScheduler()
 
@@ -30,5 +25,4 @@ sched = BlockingScheduler()
 def timed_job():
     con()
         
-
 sched.start()
