@@ -10,17 +10,6 @@ trx={
                             #note that you should find the exact position of the symbol or else it will effect badly to your trades and probaly damn your account  
 }
 
-bat={
-    "pair": "BATUSDT",
-    "q": "USDT",
-    "b": "BAT",
-    "step": 0.0001,
-    "levr": 50,
-    "t": "15m",
-    "r": 0.1,
-    "p": 19
-}
-
 xlm={
     "pair": "XLMUSDT",
     "q": "USDT",
@@ -32,14 +21,14 @@ xlm={
     "p": 9
 }
 
-iota={
-    "pair": "IOTAUSDT",
+doge={
+    "pair": "DOGEUSDT",
     "q": "USDT",
-    "b": "IOTA",
-    "step": 0.0001,
+    "b": "DOGE",
+    "step": 0.0000001,
     "levr": 50,
     "t": "15m",
-    "r": 0.1,
-    "p": 18
+    "r": 1,
+    "p": 31
 }
 

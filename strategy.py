@@ -156,45 +156,32 @@ class start:
 
         """Set up your strategy here"""
 
-        if current > baseline:
-            while tx > tema:
-                if self.openPosition == 0:
-                    clearOrders()
-                    longStop()
-                    longProfit()
-                    placeBuyOrder()
-                    print('BUY ORDER PLACED on', self.base)
-                    break
-                if self.openPosition > 0:
-                    print('No action on', self.base)
-                    break
+        """Conditions for trading"""
 
-        while tx < tema:
-            if self.openPosition > 0:
-                closeBuyOrder()
-                print('Closed BUY ORDER on', self.base)
-                clearOrders()
-                break
+        longCond = current > baseline and tx > tema and self.openPosition == 0
+        closeLongCond = tx < tema and self.openPosition > 0
+        shortCond = current < baseline and tx < tema and self.openPosition == 0
+        closeShortCond = tx > tema and self.openPosition < 0
 
-        if current < baseline:
-            while tx < tema:
-                if self.openPosition == 0:
-                    clearOrders()
-                    shortStop()
-                    shortProfit()
-                    placeSellOrder()
-                    print('SELL ORDER PLACED on', self.base)
-                    break
-                if self.openPosition < 0:
-                    print('No action on', self.base)
-                    break
+        while longCond == True:
+            placeBuyOrder()
+            print('BUY ORDER PLACED on', self.base)
+            break
+            
+        while closeLongCond == True:
+            closeBuyOrder()
+            print('Closed BUY ORDER on', self.base)
+            break
 
-        while tx < tema:
-            if self.openPosition > 0:
-                closeSellOrder()
-                print('Closed SELL ORDER on', self.base)
-                break    
-
+        while shortCond == True:
+            placeSellOrder()
+            print('SELL ORDER PLACED on', self.base)
+            break
+            
+        while closeShortCond == True:
+            closeSellOrder()
+            print('Closed SELL ORDER on', self.base)
+            break
         
 def run(pair, q, b, step, levr, t, r, p):
     symbol = pair
