@@ -233,22 +233,14 @@ class start:
                     break
             
 def run():
-    symbol = []
     quote = 'USDT'
-    step_size = []
     leverage = 20
     interval = '15m'
-    roundQuant = []
 
     t = Binance.client.futures_exchange_info()
 
     for i in t['symbols']:
         if i['symbol'].endswith(quote):
-            symbol.append(i['symbol'])
-            step_size.append(decimalize(i['pricePrecision']))
-            roundQuant.append(decimalize(i['quantityPrecision']))
+            start(i['symbol'], quote, decimalize(i['pricePrecision']), leverage, interval, decimalize(i['quantityPrecision']))
 
-
-    for a,b,c in zip(symbol, step_size, roundQuant):
-        start(a, quote, b, leverage, interval, c)
 
