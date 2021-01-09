@@ -9,5 +9,3 @@ api_key = 'YOUR_API_ADDRESS'
 api_secret = 'YOUR_API_SECRET'
 
 client = Client(api_key, api_secret)
-
-

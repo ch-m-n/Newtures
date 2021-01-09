@@ -1,7 +1,5 @@
 import strategy
 import threading
-import time
-import datetime
 from apscheduler.schedulers.blocking import BlockingScheduler
 
 def con():
