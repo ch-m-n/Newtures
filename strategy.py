@@ -234,7 +234,7 @@ WARNING: This option may triggering liquidation if you don't have a clear
 capital management strategy or your account is too small,
 better go with 1 or 2 symbol if you are a beginner
 """
-
+# OPTION 1
 #def run():
 #    quote = 'USDT'
 #    leverage = 20
@@ -248,6 +248,7 @@ better go with 1 or 2 symbol if you are a beginner
 #        if i['symbol'].endswith(quote):
 #            start(i['symbol'], quote, decimalize(i['pricePrecision']), leverage, interval, decimalize(i['quantityPrecision']), total_quant)
 
+# OPTION 2
 def run():
 	tlist = ['BTCUSDT', 'TRXUSDT']
 	quote = 'USDT'
