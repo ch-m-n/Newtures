@@ -193,9 +193,9 @@ class start:
 
 		while longCond == True:
 			try:
-				#clearOrders()
-				#placeBuyOrder()
-				#longStop()
+				clearOrders()
+				placeBuyOrder()
+				longStop()
 				print('Long order opened on', self.symbol)
 				break
 			except:
@@ -203,9 +203,9 @@ class start:
 
 		while shortCond == True:
 			try:
-				#clearOrders()
-				#placeSellOrder()
-				#shortStop()
+				clearOrders()
+				placeSellOrder()
+				shortStop()
 				print('Short order opened on', self.symbol)
 				break
 			except:
