@@ -94,27 +94,33 @@ class start:
 		df = self.df
 		"""Prepare indicators for strategy"""
 		baseline = MA(df['close'], timeperiod=100)
-		baseline = float(baseline[499])
+		baseline = float(baseline.iloc[-1])
 
 		atr = ATR(df['high'], df['low'], df['close'], timeperiod=14)
-		atr = float(atr[499])
+		atr = float(atr.iloc[-1])
 
 		trix = TRIX(df['close'], timeperiod=20)
-		tx = float(trix[499])*100
+		tx = float(trix.iloc[-1])*100
 
 		blue = EMA(df['close'], timeperiod=7)
 		tema = TRIX(blue, timeperiod=20)
-		tema = float(tema[499])*100
+		tema = float(tema.iloc[-1])*100
 
-		low = float(floatPrecision(df['low'][499], self.step_size))
-		high = float(floatPrecision(df['high'][499], self.step_size))
+		low = float(floatPrecision(df['low'].iloc[-1], self.step_size))
+		high = float(floatPrecision(df['high'].iloc[-1], self.step_size))
 
-		current = float(floatPrecision(df['close'][499], self.step_size))
+		current = float(floatPrecision(df['close'].iloc[-1], self.step_size)) #last price
 
-		longSL = float(floatPrecision((baseline - atr), self.step_size))
-		longTP = float(floatPrecision((current + atr*3), self.step_size))
-		shortSL = float(floatPrecision((baseline + atr), self.step_size))
-		shortTP = float(floatPrecision((current - atr*3), self.step_size))
+		#Set exit conditions for exit trade
+		longSL = float(floatPrecision((current - atr), self.step_size)) #Long order Stop loss
+		longTP = float(floatPrecision((current + atr*3), self.step_size)) #Long order Take profit
+		shortSL = float(floatPrecision((current + atr), self.step_size)) #Short order Stop loss
+		shortTP = float(floatPrecision((current - atr*3), self.step_size)) #Short order Take profit
+		trailingLong = float(floatPrecision(current + atr*2.2, self.step_size)) #Trailing long
+		trailingShort = float(floatPrecision(current - atr*2.2, self.step_size)) #Trailing short
+
+		#Note: all setup for limited orders above are based on ATR indicator. If you want to customise it, just subtract or add up current value with the number you like
+		#example: longSL = float(floatPrecision((current - current*0.1), self.step_size)) set stop loss at 1% of entry price
 
 		def clearOrders():
 			order = Binance.client.futures_cancel_all_open_orders(
@@ -181,6 +187,26 @@ class start:
 				type = 'TAKE_PROFIT_MARKET',
 				stopPrice = shortTP,
 				closePosition='true')
+
+		def long_trailing():
+			return Binance.client.futures_create_order(
+				symbol = self.symbol,
+				side = 'SELL',
+				type = 'TRAILING_STOP_MARKET',
+				reduceOnly = True,
+				quantity = self.Quant,
+				activationPrice= trailingLong,
+				callbackRate= 0.1)
+
+		def short_trailing():
+			return Binance.client.futures_create_order(
+				symbol = self.symbol,
+				side = 'BUY',
+				type = 'TRAILING_STOP_MARKET',
+				reduceOnly = True,
+				quantity = self.Quant,
+				activationPrice= trailingShort,
+				callbackRate= 0.1)
 
 		"""Set up your strategy here 
 		Conditions for trading"""
@@ -250,7 +276,7 @@ better go with 1 or 2 symbol if you are a beginner
 
 # OPTION 2
 def run():
-	tlist = ['BTCUSDT', 'TRXUSDT']
+	tlist = ['BTCUSDT', 'TRXUSDT'] #Symbols for trade go here
 	quote = 'USDT'
 	leverage = 20 #Don't try to change this to higher, x20 leverage is way too risky
 	interval = '15m'
