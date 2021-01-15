@@ -12,6 +12,7 @@ Requirements:
 Python 3.7 or above, Pip
 
 Setup on your local machine:
+
 1.Install all required libraries in 'requirements.txt' by run this following command 
 
 'pip install -r requirements.txt'
