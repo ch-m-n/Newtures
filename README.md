@@ -13,13 +13,13 @@ Python 3.7 or above, Pip
 
 Setup on your local machine:
 
-1.Install all required libraries in 'requirements.txt' by run this following command 
+1.Install all required libraries in `requirements.txt` by run this following command 
 
-'pip install -r requirements.txt'
+`pip install -r requirements.txt`
 
-2.Read instruction comments in 'strategy.py' and set your own strategy
+2.Read instruction comments in `strategy.py` and set your own strategy
 
-3.Run 'clock.py'
+3.Run `clock.py`
 
 Note: This is a Heroku bot and use TA-Lib as technical indicators library so you need include TA-Lib buildpack for your Heroku app
 
