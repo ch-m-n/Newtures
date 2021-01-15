@@ -8,7 +8,7 @@ def con():
 
 sched = BlockingScheduler()
 
-@sched.scheduled_job('cron', day_of_week='mon-sun', hour = '0-23', minute = '0-59/15', max_instances=15, misfire_grace_time=3600)
+@sched.scheduled_job('cron', day_of_week='mon-sun', hour = '0-23', minute = '0-59/15', max_instances=15, misfire_grace_time=3600) #set time for your trade, this default set the ot to run every 15minutes
 def timed_job():
     con()
 
