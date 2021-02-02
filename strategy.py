@@ -224,8 +224,8 @@ class start:
 				longStop()
 				print('Long order opened on', self.symbol)
 				break
-			except:
-				break
+			except Exception as e:
+				print('Error occured while trying to place LONG order: {}'.format(e))
 
 		while shortCond == True:
 			try:
@@ -234,17 +234,18 @@ class start:
 				shortStop()
 				print('Short order opened on', self.symbol)
 				break
-			except:
-				break
-			
+			except Exception as e:
+				print('Error occured while trying to place SHORT order: {}'.format(e))
+
 		while closeLong == True:
 			try:
 				closeBuyOrder()
 				clearOrders()
 				print('Long order closed on', self.symbol)
 				break
-			except:
-				break
+			except Exception as e:
+				print('Error occured while trying to close LONG order: {}'.format(e))
+
 
 		while closeShort == True:
 			try:
@@ -252,8 +253,9 @@ class start:
 				clearOrders()
 				print('Short order closed on', self.symbol)
 				break
-			except:
-				break
+			except Exception as e:
+				print('Error occured while trying to close SHORT order: {}'.format(e))
+
 
 """Scan and place order for all symbols available on market
 WARNING: This option may triggering liquidation if you don't have a clear 
@@ -288,5 +290,7 @@ def run():
 	for i in t['symbols']:
 		for j in tlist:
 			if i['symbol'] == j:
-				start(i['symbol'], quote, decimalize(i['pricePrecision']), leverage, interval, decimalize(i['quantityPrecision']), total_quant)
-
+				try:
+					start(i['symbol'], quote, decimalize(i['pricePrecision']), leverage, interval, decimalize(i['quantityPrecision']), total_quant)
+				except Exception as e:
+					print('Error occured while execute main function: {}'.format(e))
