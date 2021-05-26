@@ -34,7 +34,7 @@ class start:
 		self.entryPrice = float(Binance.client.futures_position_information()[self.pos]['entryPrice'])
 		self.df = self.getData()
 		self.changeLeverage = self.changeLeverage()
-		self.quoteBalance = float(Binance.client.futures_account_balance()[0]['balance'])
+		self.quoteBalance = appointAccountBalance()
 		self.Quant = self.checkQuant()
 		self.fire = self.strategy()
 
@@ -43,6 +43,12 @@ class start:
 		for i in p:
 			if i['symbol'] == self.symbol:
 				return p.index(i)
+
+	def appointAccountBalance(self):
+		b = Binance.client.futures_account_balance()
+		for i in b:
+			if i['asset'] == 'USDT':
+				return float(i['balance'])
 
 	def getData(self):
 		candles = Binance.client.futures_klines(symbol=self.symbol, interval=self.interval)
@@ -93,18 +99,14 @@ class start:
 
 		df = self.df
 		"""Prepare indicators for strategy"""
-		baseline = MA(df['close'], timeperiod=100)
-		baseline = float(baseline.iloc[-1])
+		ma1 = MA(df['close'], timeperiod=20)
+		ma1 = float(ma1.iloc[-1])
+
+		ma2 = MA(df['close'], timeperiod=100)
+		ma2 = float(ma2.iloc[-1])
 
 		atr = ATR(df['high'], df['low'], df['close'], timeperiod=14)
 		atr = float(atr.iloc[-1])
-
-		trix = TRIX(df['close'], timeperiod=20)
-		tx = float(trix.iloc[-1])*100
-
-		blue = EMA(df['close'], timeperiod=7)
-		tema = TRIX(blue, timeperiod=20)
-		tema = float(tema.iloc[-1])*100
 
 		low = float(floatPrecision(df['low'].iloc[-1], self.step_size))
 		high = float(floatPrecision(df['high'].iloc[-1], self.step_size))
@@ -211,10 +213,10 @@ class start:
 		"""Set up your strategy here 
 		Conditions for trading"""
 
-		longCond = current > baseline and tx > tema and self.openPosition == 0
-		closeLong = tx < tema and self.openPosition > 0
-		shortCond = current < baseline and tx < tema and self.openPosition == 0
-		closeShort = tx > tema and self.openPosition < 0
+		longCond = ma1 > ma2 and self.openPosition == 0
+		closeLong = ma1 < ma2 and self.openPosition > 0
+		shortCond = ma1 < ma2 and self.openPosition == 0
+		closeShort = ma1 > ma2 and self.openPosition < 0
 		#############################################
 
 		while longCond == True:
