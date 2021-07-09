@@ -34,7 +34,7 @@ class start:
 		self.entryPrice = float(Binance.client.futures_position_information()[self.pos]['entryPrice'])
 		self.df = self.getData()
 		self.changeLeverage = self.changeLeverage()
-		self.quoteBalance = appointAccountBalance()
+		self.quoteBalance = self.appointAccountBalance()
 		self.Quant = self.checkQuant()
 		self.fire = self.strategy()
 
