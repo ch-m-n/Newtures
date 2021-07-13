@@ -133,7 +133,7 @@ class start:
 				symbol = self.symbol,
 				side = 'BUY',
 				type = 'MARKET',
-				quantity = self.baseBalance,
+				quantity = abs(self.openPosition),
 				reduceOnly='true')
 			
 		def closeBuyOrder():
@@ -141,7 +141,7 @@ class start:
 				symbol = self.symbol,
 				side = 'SELL',
 				type = 'MARKET',
-				quantity = self.baseBalance,
+				quantity = abs(self.openPosition),
 				reduceOnly='true')
 			
 		def placeSellOrder():
