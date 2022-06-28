@@ -1,5 +1,5 @@
 # Newtures
-Heroku deployable Binance Futures trading bot
+Heroku Binance Futures trading bot
 
 Please read comments in `strategy.py` for more information about trading options
 
